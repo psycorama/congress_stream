@@ -4,10 +4,14 @@ site="http://streaming-26c3-wmv.fem-net.de/saal"
 
 while true; do
 
+PROGRAMM=$(./parse_fahrplan.pl)
+
 xmessage -buttons "Saal 1":1,"Saal 2":2,"Saal 3":3,"reload":9,"Quit":0 \
         -default Cancel \
         -center "Miniauswahlskript fuer die Streams vom
 Chaos Communication Congress.
+
+$PROGRAMM
 
 Cache is set for 4MB. Should be enough"
 
