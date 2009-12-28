@@ -15,6 +15,11 @@ my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) =
 $mon+=1;
 $year+=1900;
 
+if ($hour < 3) {
+    $mday--;
+    $hour+=24;
+}
+
 my %seen;
 
 sub ttm ($) {
