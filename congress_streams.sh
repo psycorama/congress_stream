@@ -1,6 +1,6 @@
 #!/bin/bash
 
-site="http://streaming-26c3-wmv.fem-net.de/saal"
+site="http://streaming-26c3-wmv.fem-net.de"
 
 while true; do
 
