@@ -59,7 +59,7 @@ sub search($$$) {
 		$found++;
 		
 		if ($recurse) {
-		    $offset = ttm($event->{duration});
+		    $offset = $offset + ttm($event->{duration});
 		    search($saal, 0, $offset);
 		}
 	    }
