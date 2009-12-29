@@ -1,4 +1,5 @@
 #!/bin/bash
+# git push test
 
 SITE=http://streaming-26c3-wmv.fem-net.de
 MYPATH=/home/congress
