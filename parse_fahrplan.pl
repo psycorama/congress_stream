@@ -30,13 +30,14 @@ sub ttm ($) {
     return 0;
 }
 
-sub search($$);
+sub search($$$);
 
-sub search($$) {
+sub search($$$) {
 # die eigentliche Suche
 
-    my ($saal, $offset) = (@_);
-    
+    my ($saal, $recurse, $offset) = (@_);
+    my $found = 0;
+
     foreach my $day (@{$ref->{day}}) {
 	
 	next unless $day->{date} eq "$year-$mon-$mday";
@@ -55,19 +56,25 @@ sub search($$) {
 		$seen{$event_id}++; ### WTF HACKS!
 
 		print "  $event->{start}h +$event->{duration}  $event->{title}\n";
+		$found++;
 		
-		if ($offset == 0) {
+		if ($recurse) {
 		    $offset = ttm($event->{duration});
-		    search($saal, $offset);
+		    search($saal, 0, $offset);
 		}
 	    }
 	    
 	}
 	
     }
+
+    return $found;
 }
 
 foreach my $saal qw(Saal1 Saal2 Saal3) {
     print "$saal:\n";
-    search($saal, 0);
+
+    foreach my $lookahead qw(0 20 40 60 80 100 120 140 160 180) {
+	last if search($saal, 1, $lookahead);
+    }
 }
