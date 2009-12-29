@@ -2,7 +2,7 @@
 use strict;
 use XML::Simple;
 
-my $xml = `wget -qO- http://events.ccc.de/congress/2009/Fahrplan/schedule.de.xml | sed s/00:00/24:00/`;
+my $xml = `cat schedule`;
 my $ref = XMLin($xml);
 
 # use Data::Dumper;
