@@ -3,12 +3,13 @@
 
 SITE=http://streaming-26c3-wmv.fem-net.de
 MYPATH=/home/congress
+[ -d $MYPATH ] || MYPATH=./
 
 wget -qO$MYPATH/schedule http://events.ccc.de/congress/2009/Fahrplan/schedule.de.xml | sed s/00:00/24:00/
 
 while true; do
 
-PROGRAMM=$(/home/congress/parse_fahrplan.pl)
+PROGRAMM=$($MYPATH/parse_fahrplan.pl)
 TIME=`date +%H:%M`
 xmessage -buttons "Saal 1":1,"Saal 2":2,"Saal 3":3,"reload":9,"Quit":0 \
         -default Cancel \
