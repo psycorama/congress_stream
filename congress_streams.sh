@@ -1,38 +1,60 @@
 #!/bin/bash
-# git push test
 
-SITE=http://streaming-26c3-wmv.fem-net.de
+######################################################################
+
+# stream URL configuration be here
+STREAM_BASE=http://streaming-26c3-wmv.fem-net.de
+STREAM_1=${STREAM_BASE}/saal1
+STREAM_2=${STREAM_BASE}/saal2
+STREAM_3=${STREAM_BASE}/saal3
+
+# Fahrplan URL
+FAHRPLAN=http://events.ccc.de/congress/2010/Fahrplan/schedule.de.xml
+
+# mplayer options
+MPLAYER_OPTS="-cache 4096"
+
+# whereami? (with fallback)
 MYPATH=/home/congress
-[ -d $MYPATH ] || MYPATH=./
+[ -d ${MYPATH} ] || MYPATH=./
 
-wget -qO$MYPATH/schedule http://events.ccc.de/congress/2010/Fahrplan/schedule.de.xml | sed s/00:00/24:00/
+######################################################################
 
+# get current schedule
+wget -qO${MYPATH}/schedule ${FAHRPLAN} | sed s/00:00/24:00/
+
+# shoop da loop
 while true; do
 
-PROGRAMM=$($MYPATH/parse_fahrplan.pl)
-TIME=`date +%H:%M`
-xmessage -buttons "Saal 1":1,"Saal 2":2,"Saal 3":3,"reload":9,"Quit":0 \
+    SCHEDULE=$(${MYPATH}/parse_fahrplan.pl)
+    TIME=`date +%H:%M`
+    xmessage -buttons "Saal 1":1,"Saal 2":2,"Saal 3":3,"reload":9,"Quit":0 \
         -default Cancel \
         -center "Miniauswahlskript fuer die Streams vom
 Chaos Communication Congress.
 
-Uhrzeit: $TIME
-$PROGRAMM
+Uhrzeit: ${TIME}
+${SCHEDULE}
 
-Cache is set for 4MB. Should be enough"
+mplayer options: ${MPLAYER_OPTS}"
 
-ret=$?
+    case $? in
+	1)
+	    mplayer ${MPLAYER_OPTS} ${STREAM_1}
+	    ;;
 
-if [ $ret -eq 1 ]; then
-    mplayer -cache 4000 $SITE/saal1
-elif [ $ret -eq 2 ]; then
-    mplayer -cache 4000 $SITE/saal2
-elif [ $ret -eq 3 ]; then
-    mplayer -cache 4000 $SITE/saal3
-elif [ $ret -eq 9 ]; then
-        exec $MYPATH/congress_streams.sh
-elif [ $ret -eq 0 ]; then
-        exit 0;
-fi;
+	2)
+	    mplayer ${MPLAYER_OPTS} ${STREAM_2}
+	    ;;
+	3)
+	    mplayer ${MPLAYER_OPTS} ${STREAM_3}
+	    ;;
+	9)
+	    exec ${MYPATH}/congress_streams.sh
+	    ;;
+	0)
+	    exit 0
+	    ;;
+    esac
 
-done;
+done
