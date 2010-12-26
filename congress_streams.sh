@@ -5,7 +5,7 @@ SITE=http://streaming-26c3-wmv.fem-net.de
 MYPATH=/home/congress
 [ -d $MYPATH ] || MYPATH=./
 
-wget -qO$MYPATH/schedule http://events.ccc.de/congress/2009/Fahrplan/schedule.de.xml | sed s/00:00/24:00/
+wget -qO$MYPATH/schedule http://events.ccc.de/congress/2010/Fahrplan/schedule.de.xml | sed s/00:00/24:00/
 
 while true; do
 
