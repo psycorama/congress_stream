@@ -74,7 +74,7 @@ sub search($$$) {
 foreach my $saal ('Saal 1', 'Saal 2', 'Saal 3') {
     print "$saal:\n";
 
-    foreach my $lookahead qw(0 20 40 60 80 100 120 140 160 180) {
+    foreach my $lookahead (qw(0 20 40 60 80 100 120 140 160 180)) {
 	last if search($saal, 1, $lookahead);
     }
 }
