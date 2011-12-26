@@ -3,7 +3,7 @@
 ######################################################################
 
 # stream URL configuration be here
-STREAM_BASE=http://wmv.27c3.fem-net.de
+STREAM_BASE=http://wmv.28c3.fem-net.de
 STREAM_1=${STREAM_BASE}/saal1
 STREAM_2=${STREAM_BASE}/saal2
 STREAM_3=${STREAM_BASE}/saal3
