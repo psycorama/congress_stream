@@ -34,6 +34,7 @@ while true; do
 Chaos Communication Congress.
 
 Uhrzeit: ${TIME}
+
 ${SCHEDULE}
 
 mplayer options: ${MPLAYER_OPTS}"
