@@ -10,7 +10,7 @@ my $ref = XMLin($xml);
 
 
 my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) =
-#    localtime(time-(60*60*6));
+#    localtime(time-(60*60*24*5));
     localtime(time);
 $mon+=1;
 $year+=1900;
@@ -52,10 +52,23 @@ sub search($$$) {
 		$now <= ttm($event->{start})+ttm($event->{duration})
 		and
 		!exists $seen{$event_id}) {
+
+		my @persons;
+
+		if (exists $event->{persons}->{person}->{content}) {
+		    push @persons, $event->{persons}->{person}->{content};
+		} else {
+		    @persons = map { $_->{content} } values %{$event->{persons}->{person}};
+		}
 		
 		$seen{$event_id}++; ### WTF HACKS!
 
-		print "  $event->{start}h +$event->{duration}  $event->{title}\n";
+		printf("  %sh -> +%sh  %s\n                     [%s]\n\n",
+		       $event->{start},
+		       $event->{duration},
+		       $event->{title},
+		       join (', ', @persons)
+		    );
 		$found++;
 		
 		if ($recurse) {
