@@ -3,10 +3,11 @@
 ######################################################################
 
 # stream URL configuration be here
-STREAM_BASE=http://wmv.28c3.fem-net.de
-STREAM_1=${STREAM_BASE}/saal1
-STREAM_2=${STREAM_BASE}/saal2
-STREAM_3=${STREAM_BASE}/saal3
+# official streams as statde here: https://events.ccc.de/congress/2012/wiki/Streaming
+STREAM_BASE=mmsh://wmv.28c3.fem-net.de
+STREAM_1=${STREAM_BASE}/hall1
+STREAM_2=${STREAM_BASE}/hall4
+STREAM_3=${STREAM_BASE}/hall6
 
 # Fahrplan URL
 FAHRPLAN=http://events.ccc.de/congress/2012/Fahrplan/schedule.de.xml
@@ -28,7 +29,7 @@ while true; do
 
     SCHEDULE=$(${MYPATH}/parse_fahrplan.pl)
     TIME=`date +%H:%M`
-    xmessage -buttons "Saal 1":1,"Saal 2":2,"Saal 3":3,"reload":9,"Quit":0 \
+    xmessage -buttons "Saal 1":1,"Saal 4":4,"Saal 6":6,"reload":9,"Quit":0 \
         -default Cancel \
         -center "Miniauswahlskript fuer die Streams vom
 Chaos Communication Congress.
@@ -44,10 +45,10 @@ mplayer options: ${MPLAYER_OPTS}"
 	    mplayer ${MPLAYER_OPTS} ${STREAM_1}
 	    ;;
 
-	2)
+	4)
 	    mplayer ${MPLAYER_OPTS} ${STREAM_2}
 	    ;;
-	3)
+	6)
 	    mplayer ${MPLAYER_OPTS} ${STREAM_3}
 	    ;;
 	9)
