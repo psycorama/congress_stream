@@ -4,10 +4,10 @@
 
 # stream URL configuration be here
 # official streams as statde here: https://events.ccc.de/congress/2012/wiki/Streaming
-STREAM_BASE=mmsh://wmv.28c3.fem-net.de
-STREAM_1=${STREAM_BASE}/hall1
-STREAM_2=${STREAM_BASE}/hall4
-STREAM_3=${STREAM_BASE}/hall6
+STREAM_BASE=http://wmv.29c3.fem-net.de
+STREAM_1=${STREAM_BASE}/saal1
+STREAM_2=${STREAM_BASE}/saal4
+STREAM_3=${STREAM_BASE}/saal6
 
 # Fahrplan URL
 FAHRPLAN=http://events.ccc.de/congress/2012/Fahrplan/schedule.de.xml
