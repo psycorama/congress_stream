@@ -9,7 +9,7 @@ STREAM_2=${STREAM_BASE}/saal2
 STREAM_3=${STREAM_BASE}/saal3
 
 # Fahrplan URL
-FAHRPLAN=http://events.ccc.de/congress/2011/Fahrplan/schedule.de.xml
+FAHRPLAN=http://events.ccc.de/congress/2012/Fahrplan/schedule.de.xml
 
 # mplayer options
 MPLAYER_OPTS="-cache 4096"
