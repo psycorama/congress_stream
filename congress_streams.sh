@@ -46,7 +46,8 @@ while true; do
 
     SCHEDULE=$(${MYPATH}/parse_fahrplan.pl)
     TIME=`date +%H:%Mh`
-    xmessage -buttons "Saal 1":1,"Saal 2":2,"Saal G":3,"Saal 6":4,\
+    xmessage -xrm '*international: true' \
+        -buttons "Saal 1":1,"Saal 2":2,"Saal G":3,"Saal 6":4,\
 "set RTMP":21,"set HLS":22,"set WEBM":23,\
 "set HD":24,"set SD":25,\
 "reload":9,"Quit":0 \
