@@ -1,0 +1,9 @@
+
+This tool is designed to enable easy access to the treams of the
+yearly "Chaos Communications Congress".
+
+Just start it with
+
+    ./congress_streams.sh
+
+and enjoy the show.
