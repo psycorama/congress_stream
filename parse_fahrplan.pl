@@ -2,6 +2,8 @@
 use strict;
 use XML::Simple;
 
+use Encode;
+
 my $xml = `cat schedule`;
 my $ref = XMLin($xml);
 
@@ -66,8 +68,8 @@ sub search($$$) {
 		printf("  %sh -> +%sh  %s\n                     [%s]\n\n",
 		       $event->{start},
 		       $event->{duration},
-		       $event->{title},
-		       join (', ', @persons)
+		       encode_utf8($event->{title}),
+		       encode_utf8(join (', ', @persons))
 		    );
 		$found++;
 		
