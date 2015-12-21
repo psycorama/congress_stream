@@ -39,7 +39,7 @@ MYPATH=/home/congress
 ######################################################################
 
 # get current schedule
-wget -qO${MYPATH}/schedule ${FAHRPLAN} | sed s/00:00/24:00/
+wget -qO${MYPATH}/schedule ${FAHRPLAN}
 
 # shoop da loop
 while true; do
