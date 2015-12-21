@@ -12,9 +12,8 @@ if [ -z $(which mplayer) ]; then
     exit -1;
 fi
 
-RTMP_BASE=rtmp://rtmp.stream.c3voc.de:1935
-HLS_BASE=http://hls.stream.c3voc.de/hls
-WEBM_BASE=http://webm.stream.c3voc.de:8000
+HLS_BASE=http://cdn.c3voc.de/hls/
+WEBM_BASE=http://cdn.c3voc.de/
 
 if [ -z "$QUALITY" ]; then
     QUALITY=hd
@@ -48,7 +47,7 @@ while true; do
     TIME=`date +%H:%Mh`
     xmessage -xrm '*international: true' \
         -buttons "Hall 1":1,"Hall 2":2,"Hall G":3,"Hall 6":4,\
-"set RTMP":21,"set HLS":22,"set WEBM":23,\
+"set HLS":22,"set WEBM":23,\
 "set HD":24,"set SD":25,\
 "reload":9,"Quit":0 \
         -default Cancel \
@@ -68,10 +67,6 @@ mplayer options: ${MPLAYER_OPTS}"
     case $SELECT in
     [1-4])
         case $STREAM_TYPE in
-        "rtmp")
-            STREAM_BASE="${RTMP_BASE}/stream/s"
-            STREAM_TAIL="_native_$QUALITY"
-            ;;
         "hls")
             STREAM_BASE="${HLS_BASE}/s"
             STREAM_TAIL="_native_$QUALITY.m3u8"
@@ -83,9 +78,6 @@ mplayer options: ${MPLAYER_OPTS}"
         esac
 
         mplayer ${MPLAYER_OPTS} ${STREAM_BASE}$SELECT$STREAM_TAIL
-        ;;
-    21)
-        STREAM_TYPE=rtmp
         ;;
     22)
         STREAM_TYPE=hls
