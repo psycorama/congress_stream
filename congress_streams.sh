@@ -27,7 +27,7 @@ if [ -z "$STREAM_TYPE" ] ; then
 fi
 
 # Fahrplan URL
-FAHRPLAN=http://events.ccc.de/congress/2014/Fahrplan/schedule.xml
+FAHRPLAN=https://events.ccc.de/congress/2015/Fahrplan/schedule.xml
 
 # mplayer options
 MPLAYER_OPTS="-cache 4096"
@@ -47,7 +47,7 @@ while true; do
     SCHEDULE=$(${MYPATH}/parse_fahrplan.pl)
     TIME=`date +%H:%Mh`
     xmessage -xrm '*international: true' \
-        -buttons "Saal 1":1,"Saal 2":2,"Saal G":3,"Saal 6":4,\
+        -buttons "Hall 1":1,"Hall 2":2,"Hall G":3,"Hall 6":4,\
 "set RTMP":21,"set HLS":22,"set WEBM":23,\
 "set HD":24,"set SD":25,\
 "reload":9,"Quit":0 \

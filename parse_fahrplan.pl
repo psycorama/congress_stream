@@ -86,7 +86,7 @@ sub search($$$) {
     return $found;
 }
 
-foreach my $saal ('Saal 1', 'Saal 2', 'Saal G', 'Saal 6') {
+foreach my $saal ('Hall 1', 'Hall 2', 'Hall G', 'Hall 6') {
     print "$saal:\n";
 
     foreach my $lookahead (qw(0 20 40 60 80 100 120 140 160 180)) {
