@@ -2,34 +2,32 @@
 
 ######################################################################
 
-# stream URL configuration be here
-# official streams as stated here:
-#   https://events.ccc.de/congress/2014/wiki/Streams
-#   http://streaming.media.ccc.de/
+# stream configuration:
+#   %d = hall    (1-4)
+#   %s = quality (hd, sd)
+HLS_URL_TEMPLATE=http://cdn.c3voc.de/hls/s%d_native_%s.m3u8
+WEBM_URL_TEMPLATE=http://cdn.c3voc.de/s%d_native_%s.webm
 
-if [ -z $(which mplayer) ]; then
-    echo "mplayer is needed for this, please install one"
-    exit -1;
-fi
-
-HLS_BASE=http://cdn.c3voc.de/hls/
-WEBM_BASE=http://cdn.c3voc.de/
-
-if [ -z "$QUALITY" ]; then
-    QUALITY=hd
-    export QUALITY
-fi
-
-if [ -z "$STREAM_TYPE" ] ; then
-    STREAM_TYPE=webm
-    export STREAM_TYPE
-fi
+# mplayer options
+MPLAYER_OPTS="-cache 4096"
 
 # Fahrplan URL
 FAHRPLAN=https://events.ccc.de/congress/2015/Fahrplan/schedule.xml
 
-# mplayer options
-MPLAYER_OPTS="-cache 4096"
+if [ -z "${QUALITY}" ]; then
+    QUALITY=hd
+    export QUALITY
+fi
+
+if [ -z "${STREAM_TYPE}" ] ; then
+    STREAM_TYPE=webm
+    export STREAM_TYPE
+fi
+
+if [ -z $(which mplayer) ]; then
+    echo "mplayer is needed for this, please install it"
+    exit -1;
+fi
 
 # whereami? (with fallback)
 MYPATH=/home/congress
@@ -60,24 +58,22 @@ now: ${TIME}
 
 ${SCHEDULE}
 
-stream options: stream_type=$STREAM_TYPE, quality=$QUALITY
+stream options: stream_type=${STREAM_TYPE}, quality=${QUALITY}
 mplayer options: ${MPLAYER_OPTS}"
 
     SELECT=$?
-    case $SELECT in
+    case ${SELECT} in
     [1-4])
-        case $STREAM_TYPE in
+        case ${STREAM_TYPE} in
         "hls")
-            STREAM_BASE="${HLS_BASE}/s"
-            STREAM_TAIL="_native_$QUALITY.m3u8"
+            printf -v STREAM_URL ${HLS_URL_TEMPLATE} ${SELECT} ${QUALITY}
             ;;
         "webm")
-            STREAM_BASE="${WEBM_BASE}/s"
-            STREAM_TAIL="_native_$QUALITY.webm"
+            printf -v STREAM_URL ${WEBM_URL_TEMPLATE} ${SELECT} ${QUALITY}
             ;;
         esac
 
-        mplayer ${MPLAYER_OPTS} ${STREAM_BASE}$SELECT$STREAM_TAIL
+        mplayer ${MPLAYER_OPTS} ${STREAM_URL}
         ;;
     22)
         STREAM_TYPE=hls
@@ -98,6 +94,5 @@ mplayer options: ${MPLAYER_OPTS}"
         exit 0
         ;;
     esac
-
 
 done
