@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ### check for necessary tools
 TOOL_LIST="xmessage mplayer timeout"
@@ -11,7 +11,7 @@ for TOOL in $TOOL_LIST; do
 done
 
 # stream configuration:
-#   %d = hall    (1,2,G,6)
+#   %d = hall    (1-4)
 #   %s = quality (hd, sd)
 HLS_URL_TEMPLATE=http://cdn.c3voc.de/hls/s%d_native_%s.m3u8
 WEBM_URL_TEMPLATE=http://cdn.c3voc.de/s%d_native_%s.webm
@@ -33,17 +33,17 @@ if [ -z "${STREAM_TYPE}" ] ; then
 fi
 
 # whereami? (with fallback)
-MYPATH=/home/congress/
-[ -d ${MYPATH} ] || MYPATH=./
+MYPATH=/home/congress
+[ -d ${MYPATH} ] || MYPATH=.
 
 ######################################################################
 
 # try to get current schedule. otherwise work with old copy or fail
 timeout 5 wget -N -qO${MYPATH}schedule.new ${FAHRPLAN}
-if [ -s ${MYPATH}schedule.new ]; then
-    cp ${MYPATH}schedule.new ${MYPATH}schedule
+if [ -s ${MYPATH}/schedule.new ]; then
+    cp ${MYPATH}/schedule.new ${MYPATH}schedule
 fi
-if [ ! -s ${MYPATH}schedule ]; then
+if [ ! -s ${MYPATH}/schedule ]; then
     printf "unable to update schedule and no cached version present. i'm sorry.\n"
     exit 1
 fi
@@ -76,10 +76,10 @@ mplayer options: ${MPLAYER_OPTS}"
     [1-4])
         case ${STREAM_TYPE} in
         "hls")
-            printf -v STREAM_URL ${HLS_URL_TEMPLATE} ${SELECT} ${QUALITY}
+            STREAM_URL=$(printf ${HLS_URL_TEMPLATE} ${SELECT} ${QUALITY})
             ;;
         "webm")
-            printf -v STREAM_URL ${WEBM_URL_TEMPLATE} ${SELECT} ${QUALITY}
+            STREAM_URL=$(printf ${WEBM_URL_TEMPLATE} ${SELECT} ${QUALITY})
             ;;
         esac
 
