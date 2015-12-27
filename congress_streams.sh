@@ -4,8 +4,8 @@
 TOOL_LIST="xmessage mplayer timeout"
 for TOOL in $TOOL_LIST; do
     if [ -z $(which $TOOL) ]; then
-        printf "$TOOL not found, please install.\n"
-        printf "check README for further informations.\n"
+        echo "$TOOL not found, please install."
+        echo "Check README for further informations."
         exit 1
     fi
 done
@@ -44,7 +44,7 @@ if [ -s ${MYPATH}/schedule.new ]; then
     cp ${MYPATH}/schedule.new ${MYPATH}/schedule
 fi
 if [ ! -s ${MYPATH}/schedule ]; then
-    printf "unable to update schedule and no cached version present. i'm sorry.\n"
+    echo "Unable to update schedule and no cached version present. I'm sorry."
     exit 1
 fi
 
