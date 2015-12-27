@@ -10,7 +10,6 @@ and enjoy the show.
 
 
 Necessary tools:
- * xmessage (fedora: gxmessage)
- * mplayer
+ * mplayer or omxplayer
  * perl, XML::Simple
  * timeout (from GNU coreutils)
