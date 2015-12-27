@@ -39,7 +39,7 @@ MYPATH=/home/congress
 ######################################################################
 
 # try to get current schedule. otherwise work with old copy or fail
-timeout 5 wget -N -qO${MYPATH}/schedule.new ${FAHRPLAN}
+timeout 5 wget -qO${MYPATH}/schedule.new ${FAHRPLAN}
 if [ -s ${MYPATH}/schedule.new ]; then
     cp ${MYPATH}/schedule.new ${MYPATH}/schedule
 fi
