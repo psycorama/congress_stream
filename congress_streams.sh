@@ -1,9 +1,17 @@
 #!/bin/bash
 
-######################################################################
+### check for necessary tools
+TOOL_LIST="xmessage mplayer timeout"
+for TOOL in $TOOL_LIST; do
+    if [ -z $(which $TOOL) ]; then
+        printf "$TOOL not found, please install.\n"
+        printf "check README for further informations.\n"
+        exit 1
+    fi
+done
 
 # stream configuration:
-#   %d = hall    (1-4)
+#   %d = hall    (1,2,G,6)
 #   %s = quality (hd, sd)
 HLS_URL_TEMPLATE=http://cdn.c3voc.de/hls/s%d_native_%s.m3u8
 WEBM_URL_TEMPLATE=http://cdn.c3voc.de/s%d_native_%s.webm
@@ -24,19 +32,21 @@ if [ -z "${STREAM_TYPE}" ] ; then
     export STREAM_TYPE
 fi
 
-if [ -z $(which mplayer) ]; then
-    echo "mplayer is needed for this, please install it"
-    exit -1;
-fi
-
 # whereami? (with fallback)
-MYPATH=/home/congress
+MYPATH=/home/congress/
 [ -d ${MYPATH} ] || MYPATH=./
 
 ######################################################################
 
-# get current schedule
-wget -qO${MYPATH}/schedule ${FAHRPLAN}
+# try to get current schedule. otherwise work with old copy or fail
+timeout 5 wget -N -qO${MYPATH}schedule.new ${FAHRPLAN}
+if [ -s ${MYPATH}schedule.new ]; then
+    cp ${MYPATH}schedule.new ${MYPATH}schedule
+fi
+if [ ! -s ${MYPATH}schedule ]; then
+    printf "unable to update schedule and no cached version present. i'm sorry.\n"
+    exit 1
+fi
 
 # shoop da loop
 while true; do
