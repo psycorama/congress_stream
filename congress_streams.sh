@@ -1,6 +1,14 @@
-#!/bin/bash
+#!/bin/sh
 
-######################################################################
+### check for necessary tools
+TOOL_LIST="timeout"
+for TOOL in $TOOL_LIST; do
+    if [ -z $(which $TOOL) ]; then
+        echo "$TOOL not found, please install."
+        echo "Check README for further informations."
+        exit 1
+    fi
+done
 
 # stream configuration:
 #   %d = hall    (1-4)
@@ -37,13 +45,19 @@ fi
 
 # whereami? (with fallback)
 MYPATH=/home/congress
-[ -d ${MYPATH} ] || MYPATH=./
+[ -d ${MYPATH} ] || MYPATH=.
 
 ######################################################################
 
-# get current schedule
-echo Getting Fahrplan...
-wget --no-verbose --show-progress -O${MYPATH}/schedule ${FAHRPLAN}
+# try to get current schedule. otherwise work with old copy or fail
+timeout 5 wget --no-verbose --show-progress -O${MYPATH}/schedule.new ${FAHRPLAN}
+if [ -s ${MYPATH}/schedule.new ]; then
+    cp ${MYPATH}/schedule.new ${MYPATH}/schedule
+fi
+if [ ! -s ${MYPATH}/schedule ]; then
+    echo "Unable to update schedule and no cached version present. I'm sorry."
+    exit 1
+fi
 
 # shoop da loop
 while true; do
@@ -81,10 +95,10 @@ read SELECT
     [1-4])
         case ${STREAM_TYPE} in
         "hls")
-            printf -v STREAM_URL ${HLS_URL_TEMPLATE} ${SELECT} ${QUALITY}
+            STREAM_URL=$(printf ${HLS_URL_TEMPLATE} ${SELECT} ${QUALITY})
             ;;
         "webm")
-            printf -v STREAM_URL ${WEBM_URL_TEMPLATE} ${SELECT} ${QUALITY}
+            STREAM_URL=$(printf ${WEBM_URL_TEMPLATE} ${SELECT} ${QUALITY})
             ;;
         esac
 
