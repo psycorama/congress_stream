@@ -39,9 +39,9 @@ MYPATH=/home/congress
 ######################################################################
 
 # try to get current schedule. otherwise work with old copy or fail
-timeout 5 wget -N -qO${MYPATH}schedule.new ${FAHRPLAN}
+timeout 5 wget -N -qO${MYPATH}/schedule.new ${FAHRPLAN}
 if [ -s ${MYPATH}/schedule.new ]; then
-    cp ${MYPATH}/schedule.new ${MYPATH}schedule
+    cp ${MYPATH}/schedule.new ${MYPATH}/schedule
 fi
 if [ ! -s ${MYPATH}/schedule ]; then
     printf "unable to update schedule and no cached version present. i'm sorry.\n"
