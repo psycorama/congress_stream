@@ -8,8 +8,19 @@
 HLS_URL_TEMPLATE=http://cdn.c3voc.de/hls/s%d_native_%s.m3u8
 WEBM_URL_TEMPLATE=http://cdn.c3voc.de/s%d_native_%s.webm
 
-# mplayer options
-MPLAYER_OPTS="-cache 4096"
+# player and options
+PLAYER="mplayer -cache 4096"
+
+# simple RasPi autodetection
+if [ $(which omxplayer) ]; then
+    PLAYER="omxplayer -o hdmi"
+    STREAM_TYPE=hls
+else
+    if [ -z $(which mplayer) ]; then
+    echo "mplayer or omxplayer are needed for this, please install one"
+    exit -1;
+    fi
+fi
 
 # Fahrplan URL
 FAHRPLAN=https://events.ccc.de/congress/2015/Fahrplan/schedule.xml
@@ -24,11 +35,6 @@ if [ -z "${STREAM_TYPE}" ] ; then
     export STREAM_TYPE
 fi
 
-if [ -z $(which mplayer) ]; then
-    echo "mplayer is needed for this, please install it"
-    exit -1;
-fi
-
 # whereami? (with fallback)
 MYPATH=/home/congress
 [ -d ${MYPATH} ] || MYPATH=./
@@ -36,32 +42,41 @@ MYPATH=/home/congress
 ######################################################################
 
 # get current schedule
-wget -qO${MYPATH}/schedule ${FAHRPLAN}
+echo Getting Fahrplan...
+wget --no-verbose --show-progress -O${MYPATH}/schedule ${FAHRPLAN}
 
 # shoop da loop
 while true; do
 
+    echo Parsing Fahrplan...
     SCHEDULE=$(${MYPATH}/parse_fahrplan.pl)
     TIME=`date +%H:%Mh`
-    xmessage -xrm '*international: true' \
-        -buttons "Hall 1":1,"Hall 2":2,"Hall G":3,"Hall 6":4,\
-"set HLS":22,"set WEBM":23,\
-"set HD":24,"set SD":25,\
-"reload":9,"Quit":0 \
-        -default Cancel \
-        -center "small script for easy selection of streams from
+    cat <<EOF
+
+
+    small script for easy selection of streams from
     32st Chaos Communication Congress
 
 streams available via http://streaming.media.ccc.de/
+EOF
+    echo now: ${TIME}
+    echo
+    echo "${SCHEDULE}"
+    echo
+    echo stream options: stream_type=${STREAM_TYPE}, quality=${QUALITY}
+    echo player options: ${PLAYER}
+    cat <<EOF
 
-now: ${TIME}
+possible commands:
+[1-4]   = Hall 1, Hall 2, Hall G, Hall 6
+[22,23] = set HLS / WEBM
+[24,25] = set HD / SD
+[9]     = reload
+[0]     = quit
+EOF
 
-${SCHEDULE}
+read SELECT
 
-stream options: stream_type=${STREAM_TYPE}, quality=${QUALITY}
-mplayer options: ${MPLAYER_OPTS}"
-
-    SELECT=$?
     case ${SELECT} in
     [1-4])
         case ${STREAM_TYPE} in
@@ -73,7 +88,7 @@ mplayer options: ${MPLAYER_OPTS}"
             ;;
         esac
 
-        mplayer ${MPLAYER_OPTS} ${STREAM_URL}
+        ${PLAYER} ${MPLAYER_OPTS} ${STREAM_URL}
         ;;
     22)
         STREAM_TYPE=hls
