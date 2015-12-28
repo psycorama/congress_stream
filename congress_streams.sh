@@ -21,6 +21,7 @@ MPLAYER_OPTS="-cache 4096"
 
 # Fahrplan URL
 FAHRPLAN=https://events.ccc.de/congress/2015/Fahrplan/schedule.xml
+FAHRPLAN_SZ=https://frab.das-sendezentrum.de/en/32c3/public/schedule.xml
 
 if [ -z "${QUALITY}" ]; then
     QUALITY=hd
@@ -38,7 +39,7 @@ MYPATH=/home/congress
 
 ######################################################################
 
-# try to get current schedule. otherwise work with old copy or fail
+# try to get current schedule, otherwise work with old copy or fail
 wget --timeout 5 -qO${MYPATH}/schedule.new ${FAHRPLAN}
 if [ -s ${MYPATH}/schedule.new ]; then
     cp ${MYPATH}/schedule.new ${MYPATH}/schedule
@@ -46,6 +47,12 @@ fi
 if [ ! -s ${MYPATH}/schedule ]; then
     echo "Unable to update schedule and no cached version present. I'm sorry."
     exit 1
+fi
+
+# try to get current Sendezentrum schedule, otherwise work with old copy or just ignore
+wget --timeout 5 -qO${MYPATH}/schedule_sz.new ${FAHRPLAN_SZ}
+if [ -s ${MYPATH}/schedule_sz.new ]; then
+    cp ${MYPATH}/schedule_sz.new ${MYPATH}/schedule_sz
 fi
 
 # shoop da loop
