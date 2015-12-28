@@ -54,7 +54,7 @@ while true; do
     SCHEDULE=$(${MYPATH}/parse_fahrplan.pl)
     TIME=`date +%H:%Mh`
     xmessage -xrm '*international: true' \
-        -buttons "Hall 1":1,"Hall 2":2,"Hall G":3,"Hall 6":4,\
+        -buttons "Hall 1":1,"Hall 2":2,"Hall G":3,"Hall 6":4,"Sendezentrum":5,\
 "set HLS":22,"set WEBM":23,\
 "set HD":24,"set SD":25,\
 "reload":9,"Quit":0 \
@@ -73,7 +73,7 @@ mplayer options: ${MPLAYER_OPTS}"
 
     SELECT=$?
     case ${SELECT} in
-    [1-4])
+    [1-5])
         case ${STREAM_TYPE} in
         "hls")
             STREAM_URL=$(printf ${HLS_URL_TEMPLATE} ${SELECT} ${QUALITY})
