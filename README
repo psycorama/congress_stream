@@ -13,4 +13,3 @@ Necessary tools:
  * xmessage (fedora: gxmessage)
  * mplayer
  * perl, XML::Simple
- * timeout (from GNU coreutils)

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ### check for necessary tools
-TOOL_LIST="xmessage mplayer timeout"
+TOOL_LIST="xmessage mplayer"
 for TOOL in $TOOL_LIST; do
     if [ -z $(which $TOOL) ]; then
         echo "$TOOL not found, please install."
@@ -39,7 +39,7 @@ MYPATH=/home/congress
 ######################################################################
 
 # try to get current schedule. otherwise work with old copy or fail
-timeout 5 wget -qO${MYPATH}/schedule.new ${FAHRPLAN}
+wget --timeout 5 -qO${MYPATH}/schedule.new ${FAHRPLAN}
 if [ -s ${MYPATH}/schedule.new ]; then
     cp ${MYPATH}/schedule.new ${MYPATH}/schedule
 fi
