@@ -19,7 +19,6 @@ $year+=1900;
 
 if ($hour < 4) {
     $mday--;
-    $hour+=24;
 }
 
 my %seen;
