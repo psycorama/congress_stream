@@ -66,7 +66,18 @@ while true; do
     echo Parsing Fahrplan...
     SCHEDULE=$(${MYPATH}/parse_fahrplan.pl)
     TIME=`date +%H:%Mh`
+<<<<<<< HEAD
     cat <<EOF
+=======
+    xmessage -xrm '*international: true' \
+        -buttons "Hall 1":1,"Hall 2":2,"Hall G":3,"Hall 6":4,"Sendezentrum":5,\
+"set HLS":22,"set WEBM":23,\
+"set HD":24,"set SD":25,\
+"reload":9,"Quit":0 \
+        -default Cancel \
+        -center "small script for easy selection of streams from
+    32st Chaos Communication Congress
+>>>>>>> master
 
 
     small script for easy selection of streams from
@@ -93,7 +104,7 @@ EOF
 read SELECT
 
     case ${SELECT} in
-    [1-4])
+    [1-5])
         case ${STREAM_TYPE} in
         "hls")
             STREAM_URL=$(printf ${HLS_URL_TEMPLATE} ${SELECT} ${QUALITY})
