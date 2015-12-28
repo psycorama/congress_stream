@@ -93,3 +93,16 @@ foreach my $saal ('Hall 1', 'Hall 2', 'Hall G', 'Hall 6') {
 	last if search($saal, 1, $lookahead);
     }
 }
+
+if (-e 'schedule_sz') {
+    $xml = `cat schedule_sz`;
+    $ref = XMLin($xml);
+
+    print "Sendezentrum:\n"; # skip 'Podcaster-Tisch'
+    foreach my $saal ("B\x{fc}hne", 'Bühne') { # cheap umlaut encoding hack
+
+	foreach my $lookahead (qw(0 20 40 60 80 100 120 140 160 180)) {
+	    last if search($saal, 1, $lookahead);
+	}
+    }
+}
