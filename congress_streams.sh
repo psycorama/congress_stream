@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ### check for necessary tools
-TOOL_LIST="timeout"
+TOOL_LIST="" # nothing here but us chickens!
 for TOOL in $TOOL_LIST; do
     if [ -z $(which $TOOL) ]; then
         echo "$TOOL not found, please install."
@@ -50,7 +50,8 @@ MYPATH=/home/congress
 ######################################################################
 
 # try to get current schedule. otherwise work with old copy or fail
-timeout 5 wget --no-verbose --show-progress -O${MYPATH}/schedule.new ${FAHRPLAN}
+echo Getting Fahrplan...
+wget --timeout 5 --no-verbose --show-progress -O${MYPATH}/schedule.new ${FAHRPLAN}
 if [ -s ${MYPATH}/schedule.new ]; then
     cp ${MYPATH}/schedule.new ${MYPATH}/schedule
 fi
