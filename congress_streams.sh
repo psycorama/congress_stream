@@ -20,7 +20,7 @@ WEBM_URL_TEMPLATE=http://cdn.c3voc.de/s%d_native_%s.webm
 MPLAYER_OPTS="-cache 4096"
 
 # Fahrplan URL
-FAHRPLAN=https://events.ccc.de/congress/2016/Fahrplan/schedule.xml
+FAHRPLAN=https://fahrplan.events.ccc.de/congress/2016/Fahrplan/schedule.xml
 FAHRPLAN_SZ=https://frab.das-sendezentrum.de/en/33c3/public/schedule.xml
 
 if [ -z "${QUALITY}" ]; then
@@ -67,7 +67,7 @@ while true; do
 "reload":9,"Quit":0 \
         -default Cancel \
         -center "small script for easy selection of streams from
-    32st Chaos Communication Congress
+    33st Chaos Communication Congress
 
 streams available via http://streaming.media.ccc.de/
 
