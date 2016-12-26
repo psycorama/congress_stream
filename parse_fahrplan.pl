@@ -10,9 +10,7 @@ my $ref = XMLin($xml);
 # use Data::Dumper;
 # print Dumper($ref);
 
-
-my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) =
-#    localtime(time-(60*60*24*5));
+my (undef,$min,$hour,$mday,$mon,$year,undef,undef,undef) =
     localtime(time);
 $mon+=1;
 $year+=1900;
