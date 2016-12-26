@@ -118,7 +118,7 @@ if (-e 'schedule_sz') {
     $ref = XMLin($xml);
 
     print "Sendezentrum:\n"; # skip 'Podcaster-Tisch'
-    foreach my $saal ("B\x{fc}hne", 'Bühne') { # cheap umlaut encoding hack
+    foreach my $saal ("Sendezentrumsb\x{fc}hne", 'Sendezentrumsbühne') { # cheap umlaut encoding hack
 
 	foreach my $lookahead (qw(0 20 40 60 80 100 120 140 160 180)) {
 	    last if search($saal, 1, $lookahead);
