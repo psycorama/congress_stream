@@ -21,7 +21,7 @@ MPLAYER_OPTS="-cache 4096"
 
 # Fahrplan URL
 FAHRPLAN=https://events.ccc.de/congress/2016/Fahrplan/schedule.xml
-FAHRPLAN_SZ=https://frab.das-sendezentrum.de/en/32c3/public/schedule.xml
+FAHRPLAN_SZ=https://frab.das-sendezentrum.de/en/33c3/public/schedule.xml
 
 if [ -z "${QUALITY}" ]; then
     QUALITY=hd
