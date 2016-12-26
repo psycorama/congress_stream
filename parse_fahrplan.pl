@@ -7,13 +7,35 @@ use Encode;
 my $xml = `cat schedule`;
 my $ref = XMLin($xml);
 
-# use Data::Dumper;
-# print Dumper($ref);
-
 my (undef,$min,$hour,$mday,$mon,$year,undef,undef,undef) =
     localtime(time);
 $mon+=1;
 $year+=1900;
+
+# overwrite current time via commandline for test purposes
+# format is YYYYMMDDhhmm
+# starting from the right, only give what you want to change
+# eg. '1255' would change time to 12:55 and keep the date
+if (defined $ARGV[0]) {
+    my $cmdline = $ARGV[0];
+    
+    if ($cmdline =~ s/(\d\d)$//) {
+	$min = $1;
+    }
+    if ($cmdline =~ s/(\d\d)$//) {
+	$hour = $1;
+    }
+    if ($cmdline =~ s/(\d\d)$//) {
+	$mday = $1;
+    }
+    if ($cmdline =~ s/(\d\d)$//) {
+	$mon = $1;
+    }
+    if ($cmdline =~ s/(\d\d\d\d)$//) {
+	$year = $1;
+    }
+    printf "time overwritten as %04d-%02d-%02d %02d:%02d\n", $year, $mon, $mday, $hour, $min;
+}
 
 if ($hour < 4) {
     $mday--;
