@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ### check for necessary tools
-TOOL_LIST="xmessage mplayer"
+TOOL_LIST="xmessage"
 for TOOL in $TOOL_LIST; do
     if [ -z $(which $TOOL) ]; then
         echo "$TOOL not found, please install."
@@ -10,14 +10,35 @@ for TOOL in $TOOL_LIST; do
     fi
 done
 
+CACHE=4096
+PLAYERS="mpv mplayer"
+for P in $PLAYERS; do
+    if [ -n "$(which ${P})" ]; then
+        PLAYER=${P}
+        break
+    fi
+done
+if [ -z "${PLAYER}" ]; then
+    echo "No player found, install one of ${PLAYERS}"
+    exit 1
+fi
+
+PLAYERS_OPTIONS=""
+case $PLAYER in
+    "mpv")
+        PLAYER_OPTIONS="--cache=${CACHE} --no-ytdl"
+        ;;
+    "mplayer")
+        PLAYER_OPTIONS="-cache ${CACHE}"
+        ;;
+esac
+echo "Using ${PLAYER} wit options ${PLAYER_OPTIONS}"
+
 # stream configuration:
 #   %d = hall    (1-4)
 #   %s = quality (hd, sd)
 HLS_URL_TEMPLATE=http://cdn.c3voc.de/hls/s%d_native_%s.m3u8
 WEBM_URL_TEMPLATE=http://cdn.c3voc.de/s%d_native_%s.webm
-
-# mplayer options
-MPLAYER_OPTS="-cache 4096"
 
 # Fahrplan URL
 FAHRPLAN=https://fahrplan.events.ccc.de/congress/2016/Fahrplan/schedule.xml
@@ -76,7 +97,8 @@ now: ${TIME}
 ${SCHEDULE}
 
 stream options: stream_type=${STREAM_TYPE}, quality=${QUALITY}
-mplayer options: ${MPLAYER_OPTS}"
+player: ${PLAYER}
+player options: ${PLAYER_OPTIONS}"
 
     SELECT=$?
     case ${SELECT} in
@@ -90,7 +112,7 @@ mplayer options: ${MPLAYER_OPTS}"
             ;;
         esac
 
-        mplayer ${MPLAYER_OPTS} ${STREAM_URL}
+        ${PLAYER} ${PLAYER_OPTIONS} ${STREAM_URL}
         ;;
     22)
         STREAM_TYPE=hls
