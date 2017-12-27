@@ -18,7 +18,7 @@ $year+=1900;
 # eg. '1255' would change time to 12:55 and keep the date
 if (defined $ARGV[0]) {
     my $cmdline = $ARGV[0];
-    
+
     if ($cmdline =~ s/(\d\d)$//) {
 	$min = $1;
     }
@@ -60,13 +60,13 @@ sub search($$$) {
     my $found = 0;
 
     foreach my $day (@{$ref->{day}}) {
-	
+
 	next unless $day->{date} eq "$year-$mon-$mday";
-	
+
 	foreach my $event_id ( keys %{$day->{room}->{$saal}->{event}} ) {
-	    
+
 	    my $event = $day->{room}->{$saal}->{event}->{$event_id};
-	    
+
 	    my $now = $hour*60 + $min + $offset;
 	    if ($now >= ttm($event->{start})
 		and
@@ -81,7 +81,7 @@ sub search($$$) {
 		} else {
 		    @persons = map { $_->{content} } values %{$event->{persons}->{person}};
 		}
-		
+
 		$seen{$event_id}++; ### WTF HACKS!
 
 		printf("  %sh -> +%sh  %s\n                     [%s]\n\n",
@@ -91,21 +91,21 @@ sub search($$$) {
 		       encode_utf8(join (', ', @persons))
 		    );
 		$found++;
-		
+
 		if ($recurse) {
 		    $offset = $offset + ttm($event->{duration});
 		    search($saal, 0, $offset);
 		}
 	    }
-	    
+
 	}
-	
+
     }
 
     return $found;
 }
 
-foreach my $saal ('Saal 1', 'Saal 2', 'Saal G', 'Saal 6') {
+foreach my $saal ('Saal Adams', 'Saal Borg', 'Saal Clarke', 'Saal Dijkstra') {
     print "$saal:\n";
 
     foreach my $lookahead (qw(0 20 40 60 80 100 120 140 160 180)) {
