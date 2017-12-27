@@ -11,5 +11,5 @@ and enjoy the show.
 
 Necessary tools:
  * xmessage (fedora: gxmessage)
- * mplayer
+ * mpv or mplayer
  * perl, XML::Simple
