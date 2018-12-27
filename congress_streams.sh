@@ -71,10 +71,10 @@ if [ ! -s ${MYPATH}/schedule ]; then
 fi
 
 # try to get current Sendezentrum schedule, otherwise work with old copy or just ignore
-wget --timeout 5 -qO${MYPATH}/schedule_sz.new ${FAHRPLAN_SZ}
-if [ -s ${MYPATH}/schedule_sz.new ]; then
-    cp ${MYPATH}/schedule_sz.new ${MYPATH}/schedule_sz
-fi
+# wget --timeout 5 -qO${MYPATH}/schedule_sz.new ${FAHRPLAN_SZ}
+# if [ -s ${MYPATH}/schedule_sz.new ]; then
+#     cp ${MYPATH}/schedule_sz.new ${MYPATH}/schedule_sz
+# fi
 
 # shoop da loop
 while true; do
