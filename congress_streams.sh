@@ -42,7 +42,7 @@ WEBM_URL_TEMPLATE=http://cdn.c3voc.de/s%d_native_%s.webm
 
 # Fahrplan URL
 FAHRPLAN=https://fahrplan.events.ccc.de/congress/2018/Fahrplan/schedule.xml
-FAHRPLAN_SZ=https://frab.das-sendezentrum.de/en/35c3/public/schedule.xml
+#FAHRPLAN_SZ=https://frab.das-sendezentrum.de/en/35c3/public/schedule.xml
 
 if [ -z "${QUALITY}" ]; then
     QUALITY=hd
