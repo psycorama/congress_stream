@@ -2,7 +2,7 @@
 
 ### check for necessary tools
 TOOL_LIST="xmessage"
-for TOOL in $TOOL_LIST; do
+for TOOL in ${TOOL_LIST}; do
     if [ -z "$(which $TOOL)" ]; then
         echo "$TOOL not found, please install."
         echo "Check README for further informations."
@@ -12,7 +12,7 @@ done
 
 CACHE=4096
 PLAYERS="mpv mplayer"
-for P in $PLAYERS; do
+for P in ${PLAYERS}; do
     if [ -n "$(which ${P})" ]; then
         PLAYER=${P}
         break
@@ -24,7 +24,7 @@ if [ -z "${PLAYER}" ]; then
 fi
 
 PLAYER_OPTIONS=""
-case $PLAYER in
+case ${PLAYER} in
     "mpv")
         PLAYER_OPTIONS="--cache=${CACHE} --no-ytdl"
         ;;
@@ -100,7 +100,7 @@ stream options: stream_type=${STREAM_TYPE}, quality=${QUALITY}
 player: ${PLAYER}
 player options: ${PLAYER_OPTIONS}"
 
-    SELECT=$?
+    SELECT=${?}
     case ${SELECT} in
     11|12|13|14|15)
         case ${STREAM_TYPE} in
