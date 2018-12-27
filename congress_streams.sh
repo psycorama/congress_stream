@@ -3,7 +3,7 @@
 ### check for necessary tools
 TOOL_LIST="xmessage"
 for TOOL in $TOOL_LIST; do
-    if [ -z $(which $TOOL) ]; then
+    if [ -z "$(which $TOOL)" ]; then
         echo "$TOOL not found, please install."
         echo "Check README for further informations."
         exit 1
@@ -23,7 +23,7 @@ if [ -z "${PLAYER}" ]; then
     exit 1
 fi
 
-PLAYERS_OPTIONS=""
+PLAYER_OPTIONS=""
 case $PLAYER in
     "mpv")
         PLAYER_OPTIONS="--cache=${CACHE} --no-ytdl"
@@ -80,7 +80,7 @@ fi
 while true; do
 
     SCHEDULE=$(${MYPATH}/parse_fahrplan.pl)
-    TIME=`date +%H:%Mh`
+    TIME=$(date +%H:%Mh)
     xmessage -xrm '*international: true' \
         -buttons "Hall Adams":11,"Hall Borg":12,"Hall Clarke":13,"Hall Dijkstra":14,"Hall Eliza":15,\
 "set HLS":22,"set WEBM":23,\
