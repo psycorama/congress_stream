@@ -82,7 +82,7 @@ while true; do
     SCHEDULE=$(${MYPATH}/parse_fahrplan.pl)
     TIME=`date +%H:%Mh`
     xmessage -xrm '*international: true' \
-        -buttons "Hall Adams":1,"Hall Borg":2,"Hall Clarke":3,"Hall Dijkstra":4,"Hall Eliza":5,\
+        -buttons "Hall Adams":11,"Hall Borg":12,"Hall Clarke":13,"Hall Dijkstra":14,"Hall Eliza":15,\
 "set HLS":22,"set WEBM":23,\
 "set HD":24,"set SD":25,\
 "reload":9,"Quit":0 \
@@ -102,13 +102,13 @@ player options: ${PLAYER_OPTIONS}"
 
     SELECT=$?
     case ${SELECT} in
-    [1-5])
+    11|12|13|14|15)
         case ${STREAM_TYPE} in
         "hls")
-            STREAM_URL=$(printf ${HLS_URL_TEMPLATE} ${SELECT} ${QUALITY})
+            STREAM_URL=$(printf ${HLS_URL_TEMPLATE} $((${SELECT}-10)) ${QUALITY})
             ;;
         "webm")
-            STREAM_URL=$(printf ${WEBM_URL_TEMPLATE} ${SELECT} ${QUALITY})
+            STREAM_URL=$(printf ${WEBM_URL_TEMPLATE} $((${SELECT}-10)) ${QUALITY})
             ;;
         esac
 
@@ -130,6 +130,10 @@ player options: ${PLAYER_OPTIONS}"
 	    exec ${MYPATH}/congress_streams.sh
 	    ;;
     0)
+        exit 0
+        ;;
+    1)
+        # Window was closed
         exit 0
         ;;
     esac
