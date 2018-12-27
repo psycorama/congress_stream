@@ -41,8 +41,8 @@ HLS_URL_TEMPLATE=http://cdn.c3voc.de/hls/s%d_native_%s.m3u8
 WEBM_URL_TEMPLATE=http://cdn.c3voc.de/s%d_native_%s.webm
 
 # Fahrplan URL
-FAHRPLAN=https://fahrplan.events.ccc.de/congress/2017/Fahrplan/schedule.xml
-FAHRPLAN_SZ=https://frab.das-sendezentrum.de/en/34c3/public/schedule.xml
+FAHRPLAN=https://fahrplan.events.ccc.de/congress/2018/Fahrplan/schedule.xml
+FAHRPLAN_SZ=https://frab.das-sendezentrum.de/en/35c3/public/schedule.xml
 
 if [ -z "${QUALITY}" ]; then
     QUALITY=hd
@@ -82,7 +82,7 @@ while true; do
     SCHEDULE=$(${MYPATH}/parse_fahrplan.pl)
     TIME=`date +%H:%Mh`
     xmessage -xrm '*international: true' \
-        -buttons "Hall Adams":1,"Hall Borg":2,"Hall Clarke":3,"Hall Dijkstra":4,\
+        -buttons "Hall Adams":1,"Hall Borg":2,"Hall Clarke":3,"Hall Dijkstra":4,"Hall Eliza":5,\
 "set HLS":22,"set WEBM":23,\
 "set HD":24,"set SD":25,\
 "reload":9,"Quit":0 \
