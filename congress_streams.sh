@@ -88,7 +88,7 @@ while true; do
 "reload":9,"Quit":0 \
         -default Cancel \
         -center "small script for easy selection of streams from
-    34th Chaos Communication Congress
+    35th Chaos Communication Congress
 
 streams available via http://streaming.media.ccc.de/
 
