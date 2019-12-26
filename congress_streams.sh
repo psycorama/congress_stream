@@ -26,7 +26,7 @@ fi
 PLAYER_OPTIONS=""
 case ${PLAYER} in
     "mpv")
-        PLAYER_OPTIONS="--cache=${CACHE} --no-ytdl"
+        PLAYER_OPTIONS="--cache --demuxer-max-bytes=${CACHE} --no-ytdl"
         ;;
     "mplayer")
         PLAYER_OPTIONS="-cache ${CACHE}"
@@ -41,7 +41,7 @@ HLS_URL_TEMPLATE=http://cdn.c3voc.de/hls/s%d_native_%s.m3u8
 WEBM_URL_TEMPLATE=http://cdn.c3voc.de/s%d_native_%s.webm
 
 # Fahrplan URL
-FAHRPLAN=https://fahrplan.events.ccc.de/congress/2018/Fahrplan/schedule.xml
+FAHRPLAN=https://fahrplan.events.ccc.de/congress/2019/Fahrplan/schedule.xml
 #FAHRPLAN_SZ=https://frab.das-sendezentrum.de/en/35c3/public/schedule.xml
 
 if [ -z "${QUALITY}" ]; then
@@ -88,7 +88,7 @@ while true; do
 "reload":9,"Quit":0 \
         -default Cancel \
         -center "small script for easy selection of streams from
-    35th Chaos Communication Congress
+    36th Chaos Communication Congress
 
 streams available via http://streaming.media.ccc.de/
 
