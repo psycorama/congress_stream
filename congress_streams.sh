@@ -82,7 +82,7 @@ while true; do
     SCHEDULE=$(${MYPATH}/parse_fahrplan.pl)
     TIME=$(date +%H:%Mh)
     xmessage -xrm '*international: true' \
-        -buttons "Hall Adams":11,"Hall Borg":12,"Hall Clarke":13,"Hall Dijkstra":14,"Hall Eliza":15,\
+        -buttons "Hall Ada":11,"Hall Borg":12,"Hall Clarke":13,"Hall Dijkstra":14,"Hall Eliza":15,\
 "set HLS":22,"set WEBM":23,\
 "set HD":24,"set SD":25,\
 "reload":9,"Quit":0 \
