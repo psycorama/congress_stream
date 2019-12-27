@@ -56,7 +56,7 @@ if [ -z "${STREAM_TYPE}" ] ; then
 fi
 
 # whereami? (with fallback)
-MYPATH=/home/congress
+MYPATH=$(dirname $0)
 [ -d ${MYPATH} ] || MYPATH=.
 
 ######################################################################
