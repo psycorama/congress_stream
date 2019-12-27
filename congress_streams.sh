@@ -10,6 +10,7 @@ for TOOL in ${TOOL_LIST}; do
     fi
 done
 
+# This number is in kilobytes
 CACHE=4096
 PLAYERS="mpv mplayer"
 for P in ${PLAYERS}; do
@@ -26,7 +27,7 @@ fi
 PLAYER_OPTIONS=""
 case ${PLAYER} in
     "mpv")
-        PLAYER_OPTIONS="--cache --demuxer-max-bytes=${CACHE} --no-ytdl"
+        PLAYER_OPTIONS="--cache --demuxer-max-bytes=${CACHE}KiB --no-ytdl"
         ;;
     "mplayer")
         PLAYER_OPTIONS="-cache ${CACHE}"
