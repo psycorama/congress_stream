@@ -37,8 +37,8 @@ echo "Using ${PLAYER} wit options ${PLAYER_OPTIONS}"
 # stream configuration:
 #   %d = hall    (1-4)
 #   %s = quality (hd, sd)
-HLS_URL_TEMPLATE=http://cdn.c3voc.de/hls/s%d_native_%s.m3u8
-WEBM_URL_TEMPLATE=http://cdn.c3voc.de/s%d_native_%s.webm
+HLS_URL_TEMPLATE=https://cdn.c3voc.de/hls/s%d_native_%s.m3u8
+WEBM_URL_TEMPLATE=https://cdn.c3voc.de/s%d_native_%s.webm
 
 # Fahrplan URL
 FAHRPLAN=https://fahrplan.events.ccc.de/congress/2019/Fahrplan/schedule.xml
