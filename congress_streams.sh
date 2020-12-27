@@ -4,6 +4,8 @@
 
 # - - - - >8 - - - - - configure here - - - - >8 - - - - -
 
+TITLE="Remote Chaos Experience"
+
 # stream configuration:
 #   %d = rc      (1-2)
 #   %s = quality (hd, sd)
@@ -97,7 +99,7 @@ while true; do
 "reload":9,"Quit":0 \
         -default Cancel \
         -center "small script for easy selection of streams from
-    36th Chaos Communication Congress
+    $TITLE
 
 streams available via http://streaming.media.ccc.de/
 
