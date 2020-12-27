@@ -23,7 +23,7 @@ FAHRPLAN=https://fahrplan.events.ccc.de/rc3/2020/Fahrplan/schedule.xml
 ### check for necessary tools
 TOOL_LIST="xmessage"
 for TOOL in ${TOOL_LIST}; do
-    if ! command -v $TOOL >/dev/null; then
+    if ! command -v "$TOOL" >/dev/null; then
         echo "$TOOL not found, please install."
         echo "Check README for further informations."
         exit 1
@@ -34,7 +34,7 @@ done
 CACHE=4096
 PLAYERS="mpv mplayer"
 for P in ${PLAYERS}; do
-    if command -v ${P} >/dev/null; then
+    if command -v "${P}" >/dev/null; then
         PLAYER=${P}
         break
     fi
@@ -66,8 +66,8 @@ if [ -z "${STREAM_TYPE}" ] ; then
 fi
 
 # whereami? (with fallback)
-MYPATH=$(dirname $0)
-[ -d ${MYPATH} ] || MYPATH=.
+MYPATH=$(dirname "$0")
+[ -d "${MYPATH}" ] || MYPATH=.
 
 ######################################################################
 
