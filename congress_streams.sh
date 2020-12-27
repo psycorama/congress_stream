@@ -1,5 +1,23 @@
 #!/bin/sh
 
+
+
+# - - - - >8 - - - - - configure here - - - - >8 - - - - -
+
+# stream configuration:
+#   %d = rc      (1-2)
+#   %s = quality (hd, sd)
+HLS_URL_TEMPLATE=https://cdn.c3voc.de/hls/rc%d_native_%s.m3u8
+WEBM_URL_TEMPLATE=https://cdn.c3voc.de/rc%d_native_%s.webm
+
+# Fahrplan URL
+FAHRPLAN=https://fahrplan.events.ccc.de/rc3/2020/Fahrplan/schedule.xml
+#FAHRPLAN_SZ=https://frab.das-sendezentrum.de/en/35c3/public/schedule.xml
+
+# - - - - 8< - - - - - configure here - - - - 8< - - - - -
+
+
+
 ### check for necessary tools
 TOOL_LIST="xmessage"
 for TOOL in ${TOOL_LIST}; do
@@ -34,16 +52,6 @@ case ${PLAYER} in
         ;;
 esac
 echo "Using ${PLAYER} wit options ${PLAYER_OPTIONS}"
-
-# stream configuration:
-#   %d = rc      (1-2)
-#   %s = quality (hd, sd)
-HLS_URL_TEMPLATE=https://cdn.c3voc.de/hls/rc%d_native_%s.m3u8
-WEBM_URL_TEMPLATE=https://cdn.c3voc.de/rc%d_native_%s.webm
-
-# Fahrplan URL
-FAHRPLAN=https://fahrplan.events.ccc.de/rc3/2020/Fahrplan/schedule.xml
-#FAHRPLAN_SZ=https://frab.das-sendezentrum.de/en/35c3/public/schedule.xml
 
 if [ -z "${QUALITY}" ]; then
     QUALITY=hd
