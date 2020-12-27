@@ -93,10 +93,11 @@ while true; do
     SCHEDULE=$(${MYPATH}/parse_fahrplan.pl)
     TIME=$(date +%H:%Mh)
     xmessage -xrm '*international: true' \
-        -buttons "rC1":11,"rC2":12,\
-"set HLS":22,"set WEBM":23,\
-"set HD":24,"set SD":25,\
-"reload":9,"Quit":0 \
+             -buttons \
+'rC1:11','rC2:12',\
+'set HLS:22','set WEBM:23',\
+'set HD:24','set SD:25',\
+'reload:9','Quit:0' \
         -default Cancel \
         -center "small script for easy selection of streams from
     $TITLE
