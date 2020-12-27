@@ -36,10 +36,10 @@ esac
 echo "Using ${PLAYER} wit options ${PLAYER_OPTIONS}"
 
 # stream configuration:
-#   %d = hall    (1-4)
+#   %d = rc      (1-2)
 #   %s = quality (hd, sd)
-HLS_URL_TEMPLATE=https://cdn.c3voc.de/hls/s%d_native_%s.m3u8
-WEBM_URL_TEMPLATE=https://cdn.c3voc.de/s%d_native_%s.webm
+HLS_URL_TEMPLATE=https://cdn.c3voc.de/hls/rc%d_native_%s.m3u8
+WEBM_URL_TEMPLATE=https://cdn.c3voc.de/rc%d_native_%s.webm
 
 # Fahrplan URL
 FAHRPLAN=https://fahrplan.events.ccc.de/congress/2019/Fahrplan/schedule.xml
@@ -83,7 +83,7 @@ while true; do
     SCHEDULE=$(${MYPATH}/parse_fahrplan.pl)
     TIME=$(date +%H:%Mh)
     xmessage -xrm '*international: true' \
-        -buttons "Hall Ada":11,"Hall Borg":12,"Hall Clarke":13,"Hall Dijkstra":14,"Hall Eliza":15,\
+        -buttons "RC1":11,"RC2":12,\
 "set HLS":22,"set WEBM":23,\
 "set HD":24,"set SD":25,\
 "reload":9,"Quit":0 \
