@@ -9,8 +9,8 @@ TITLE="Remote Chaos Experience"
 # stream configuration:
 #   %d = rc      (1-2)
 #   %s = quality (hd, sd)
-HLS_URL_TEMPLATE=https://cdn.c3voc.de/hls/rc%d_native_%s.m3u8
-WEBM_URL_TEMPLATE=https://cdn.c3voc.de/rc%d_native_%s.webm
+HLS_URL_TEMPLATE=https://cdn.c3voc.de/hls/%s_native_%s.m3u8
+WEBM_URL_TEMPLATE=https://cdn.c3voc.de/%s_native_%s.webm
 
 # Fahrplan URL
 FAHRPLAN=https://fahrplan.events.ccc.de/rc3/2020/Fahrplan/schedule.xml
@@ -18,6 +18,23 @@ FAHRPLAN=https://fahrplan.events.ccc.de/rc3/2020/Fahrplan/schedule.xml
 
 # - - - - 8< - - - - - configure here - - - - 8< - - - - -
 
+
+play_stream()
+{
+    STREAM_ID="$1"
+
+    case ${STREAM_TYPE} in
+        "hls")
+	    TEMPLATE="${HLS_URL_TEMPLATE}"
+            ;;
+        "webm")
+            TEMPLATE="${WEBM_URL_TEMPLATE}"
+            ;;
+    esac
+
+    STREAM_URL=$(printf "${TEMPLATE}" "${STREAM_ID}" "${QUALITY}")
+    "${PLAYER}" ${PLAYER_OPTIONS} "${STREAM_URL}"
+}
 
 
 ### check for necessary tools
@@ -114,17 +131,11 @@ player options: ${PLAYER_OPTIONS}"
 
     SELECT=${?}
     case ${SELECT} in
-    11|12|13|14|15)
-        case ${STREAM_TYPE} in
-        "hls")
-            STREAM_URL=$(printf ${HLS_URL_TEMPLATE} $((SELECT - 10)) ${QUALITY})
-            ;;
-        "webm")
-            STREAM_URL=$(printf ${WEBM_URL_TEMPLATE} $((SELECT - 10)) ${QUALITY})
-            ;;
-        esac
-
-        ${PLAYER} ${PLAYER_OPTIONS} ${STREAM_URL}
+    11)
+	play_stream rc1
+        ;;
+    12)
+	play_stream rc2
         ;;
     22)
         STREAM_TYPE=hls
