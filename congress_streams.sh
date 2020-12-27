@@ -116,10 +116,10 @@ player options: ${PLAYER_OPTIONS}"
     11|12|13|14|15)
         case ${STREAM_TYPE} in
         "hls")
-            STREAM_URL=$(printf ${HLS_URL_TEMPLATE} $((${SELECT}-10)) ${QUALITY})
+            STREAM_URL=$(printf ${HLS_URL_TEMPLATE} $((SELECT - 10)) ${QUALITY})
             ;;
         "webm")
-            STREAM_URL=$(printf ${WEBM_URL_TEMPLATE} $((${SELECT}-10)) ${QUALITY})
+            STREAM_URL=$(printf ${WEBM_URL_TEMPLATE} $((SELECT - 10)) ${QUALITY})
             ;;
         esac
 
