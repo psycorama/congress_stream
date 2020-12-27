@@ -42,7 +42,7 @@ HLS_URL_TEMPLATE=https://cdn.c3voc.de/hls/rc%d_native_%s.m3u8
 WEBM_URL_TEMPLATE=https://cdn.c3voc.de/rc%d_native_%s.webm
 
 # Fahrplan URL
-FAHRPLAN=https://fahrplan.events.ccc.de/congress/2019/Fahrplan/schedule.xml
+FAHRPLAN=https://fahrplan.events.ccc.de/rc3/2020/Fahrplan/schedule.xml
 #FAHRPLAN_SZ=https://frab.das-sendezentrum.de/en/35c3/public/schedule.xml
 
 if [ -z "${QUALITY}" ]; then
