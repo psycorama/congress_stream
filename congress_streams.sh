@@ -112,6 +112,7 @@ while true; do
     xmessage -xrm '*international: true' \
              -buttons \
 'rC1:11','rC2:12',\
+'CS H:13','restrealitaet:14',\
 'set HLS:22','set WEBM:23',\
 'set HD:24','set SD:25',\
 'reload:9','Quit:0' \
@@ -136,6 +137,12 @@ player options: ${PLAYER_OPTIONS}"
         ;;
     12)
 	play_stream rc2
+        ;;
+    13)
+	play_stream csh
+        ;;
+    14)
+	play_stream restrealitaet
         ;;
     22)
         STREAM_TYPE=hls
