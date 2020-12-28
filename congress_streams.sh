@@ -113,8 +113,8 @@ while true; do
              -buttons \
 'rC1:11','rC2:12',\
 'CS H:13','restrealitaet:14',\
-'set HLS:22','set WEBM:23',\
-'set HD:24','set SD:25',\
+'set HLS:2','set WEBM:3',\
+'set HD:4','set SD:5',\
 'reload:9','Quit:0' \
         -default Cancel \
         -center "small script for easy selection of streams from
@@ -144,16 +144,16 @@ player options: ${PLAYER_OPTIONS}"
     14)
 	play_stream restrealitaet
         ;;
-    22)
+    2)
         STREAM_TYPE=hls
         ;;
-    23)
+    3)
         STREAM_TYPE=webm
         ;;
-    24)
+    4)
         QUALITY=hd;
         ;;
-    25)
+    5)
         QUALITY=sd;
         ;;
     9)
