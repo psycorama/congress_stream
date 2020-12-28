@@ -121,7 +121,7 @@ sub get_all_rooms()
 # order on every display is a good thing, so everybody gets to be on
 # top once in a while
 foreach my $saal (get_all_rooms()) { # foreach my $saal ('rC1', 'rC2', ... ) {
-    print "$saal:\n";
+    printf "%s:\n", encode_utf8($saal);
 
     foreach my $lookahead (qw(0 20 40 60 80 100 120 140 160 180)) {
 	last if search($saal, 1, $lookahead);
