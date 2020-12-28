@@ -71,7 +71,7 @@ for TOOL in ${TOOL_LIST}; do
 done
 
 # This number is in kilobytes
-CACHE=128 #4096
+CACHE=4096
 PLAYERS="mpv mplayer"
 for P in ${PLAYERS}; do
     if command -v "${P}" >/dev/null; then
