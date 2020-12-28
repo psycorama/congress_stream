@@ -16,7 +16,7 @@ WEBM_URL_TEMPLATE=https://cdn.c3voc.de/%s_native_%s.webm
 FAHRPLAN=https://fahrplan.events.ccc.de/rc3/2020/Fahrplan/schedule.xml
 #FAHRPLAN_SZ=https://frab.das-sendezentrum.de/en/35c3/public/schedule.xml
 
-STREAMS="rc1 rc2 csh restrealitaet"
+STREAMS="rc1 rc2 bitwaescherei cbase csh chaostrawler chaoszone cwtv2 franconiannet hacc kreaturworks oio r3s restrealitaet sendezentrum wikipaka xhain infobeamer classics"
 
 # - - - - 8< - - - - - configure here - - - - 8< - - - - -
 
@@ -63,7 +63,7 @@ for TOOL in ${TOOL_LIST}; do
 done
 
 # This number is in kilobytes
-CACHE=4096
+CACHE=128 #4096
 PLAYERS="mpv mplayer"
 for P in ${PLAYERS}; do
     if command -v "${P}" >/dev/null; then
