@@ -38,6 +38,19 @@ play_stream()
     "${PLAYER}" ${PLAYER_OPTIONS} "${STREAM_URL}"
 }
 
+set_stream_by_id()
+{
+    ID="$1"
+
+    set -- ${STREAMS}
+
+    if [ "${ID}" -gt "${START_ID}" ]; then
+	shift $(( ID - START_ID ))
+    fi
+
+    STREAM_ID="$1"
+}
+
 
 ### check for necessary tools
 TOOL_LIST="xmessage"
@@ -106,8 +119,10 @@ fi
 #     cp ${MYPATH}/schedule_sz.new ${MYPATH}/schedule_sz
 # fi
 
+# precalculate button configuration
 BUTTONS=""
-ID=11
+START_ID=11
+ID=${START_ID}
 for STREAM in ${STREAMS}; do
     BUTTONS="${BUTTONS}${STREAM}:${ID},"
     ID=$(( ID + 1 ))
@@ -137,40 +152,32 @@ player options: ${PLAYER_OPTIONS}"
 
     SELECT=${?}
     case ${SELECT} in
-    11)
-	play_stream rc1
-        ;;
-    12)
-	play_stream rc2
-        ;;
-    13)
-	play_stream csh
-        ;;
-    14)
-	play_stream restrealitaet
-        ;;
-    2)
-        STREAM_TYPE=hls
-        ;;
-    3)
-        STREAM_TYPE=webm
-        ;;
-    4)
-        QUALITY=hd;
-        ;;
-    5)
-        QUALITY=sd;
-        ;;
-    9)
-	    exec ${MYPATH}/congress_streams.sh
+	0)
+            exit 0
+            ;;
+	1)
+            # Window was closed
+            exit 0
+            ;;
+	2)
+            STREAM_TYPE=hls
+            ;;
+	3)
+            STREAM_TYPE=webm
+            ;;
+	4)
+            QUALITY=hd;
+            ;;
+	5)
+            QUALITY=sd;
+            ;;
+	9)
+	    exec "${MYPATH}"/congress_streams.sh
 	    ;;
-    0)
-        exit 0
-        ;;
-    1)
-        # Window was closed
-        exit 0
-        ;;
+	*)
+	    set_stream_by_id ${SELECT}
+	    play_stream "${STREAM_ID}"
+	    ;;
     esac
 
 done
