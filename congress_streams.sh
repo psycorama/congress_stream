@@ -16,6 +16,8 @@ WEBM_URL_TEMPLATE=https://cdn.c3voc.de/%s_native_%s.webm
 FAHRPLAN=https://fahrplan.events.ccc.de/rc3/2020/Fahrplan/schedule.xml
 #FAHRPLAN_SZ=https://frab.das-sendezentrum.de/en/35c3/public/schedule.xml
 
+STREAMS="rc1 rc2 csh restrealitaet"
+
 # - - - - 8< - - - - - configure here - - - - 8< - - - - -
 
 
@@ -104,18 +106,21 @@ fi
 #     cp ${MYPATH}/schedule_sz.new ${MYPATH}/schedule_sz
 # fi
 
+BUTTONS=""
+ID=11
+for STREAM in ${STREAMS}; do
+    BUTTONS="${BUTTONS}${STREAM}:${ID},"
+    ID=$(( ID + 1 ))
+done
+BUTTONS="${BUTTONS}set HLS:2,set WEBM:3,set HD:4,set SD:5,reload:9,Quit:0"
+
 # shoop da loop
 while true; do
 
     SCHEDULE=$(${MYPATH}/parse_fahrplan.pl)
     TIME=$(date +%H:%Mh)
     xmessage -xrm '*international: true' \
-             -buttons \
-'rC1:11','rC2:12',\
-'CS H:13','restrealitaet:14',\
-'set HLS:2','set WEBM:3',\
-'set HD:4','set SD:5',\
-'reload:9','Quit:0' \
+             -buttons "$BUTTONS" \
         -default Cancel \
         -center "small script for easy selection of streams from
     $TITLE
