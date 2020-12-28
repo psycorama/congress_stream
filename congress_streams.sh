@@ -16,7 +16,7 @@ WEBM_URL_TEMPLATE=https://cdn.c3voc.de/%s_native_%s.webm
 FAHRPLAN=https://fahrplan.events.ccc.de/rc3/2020/Fahrplan/schedule.xml
 #FAHRPLAN_SZ=https://frab.das-sendezentrum.de/en/35c3/public/schedule.xml
 
-STREAMS="rc1 rc2 bitwaescherei cbase csh chaostrawler chaoszone cwtv2 franconiannet hacc kreaturworks oio r3s restrealitaet sendezentrum wikipaka xhain infobeamer classics"
+STREAMS="rc1 rc2 bw:bitwaescherei c-b:cbase cs-h:csh ct-sg:chaostrawler cz-tv:chaoszone cw-tv:cwtv2 f.n:franconiannet a-f:hacc kw:kreaturworks oio r3s rr:restrealitaet sz:sendezentrum wp:wikipaka xh:xhain ib:infobeamer cl:classics"
 
 # - - - - 8< - - - - - configure here - - - - 8< - - - - -
 
@@ -38,6 +38,14 @@ play_stream()
     "${PLAYER}" ${PLAYER_OPTIONS} "${STREAM_URL}"
 }
 
+set_stream_details()
+{
+    STREAM="$1"
+
+    STREAM_NAME="${1%:*}"
+    STREAM_ID="${1#*:}"
+}
+
 set_stream_by_id()
 {
     ID="$1"
@@ -48,7 +56,7 @@ set_stream_by_id()
 	shift $(( ID - START_ID ))
     fi
 
-    STREAM_ID="$1"
+    set_stream_details "$1"
 }
 
 
@@ -124,7 +132,8 @@ BUTTONS=""
 START_ID=11
 ID=${START_ID}
 for STREAM in ${STREAMS}; do
-    BUTTONS="${BUTTONS}${STREAM}:${ID},"
+    set_stream_details "${STREAM}"
+    BUTTONS="${BUTTONS}${STREAM_NAME}:${ID},"
     ID=$(( ID + 1 ))
 done
 BUTTONS="${BUTTONS}set HLS:2,set WEBM:3,set HD:4,set SD:5,reload:9,Quit:0"
