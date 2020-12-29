@@ -52,6 +52,12 @@ sub ttm ($) {
     return 0;
 }
 
+sub format_duration($) {
+    my $duration = shift;
+    $duration =~ s/^(\d):/0$1:/;
+    return $duration;
+}
+
 sub search($$$);
 
 sub search($$$) {
@@ -87,7 +93,7 @@ sub search($$$) {
 
 		printf("  %sh -> +%sh  %s\n                     [%s]\n\n",
 		       $event->{start},
-		       $event->{duration},
+		       format_duration($event->{duration}),
 		       encode_utf8($event->{title}),
 		       encode_utf8(join (', ', @persons))
 		    );
