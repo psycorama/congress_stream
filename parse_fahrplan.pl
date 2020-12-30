@@ -60,6 +60,45 @@ sub format_duration($) {
 
 sub search($$$);
 
+sub handle_event($$$$$) {
+
+    my ($event, $saal, $event_id, $recurse, $offset) = @_;
+    my $found = 0;
+    
+    my $now = $hour*60 + $min + $offset;
+    if ($now >= ttm($event->{start})
+	and
+	$now <= ttm($event->{start})+ttm($event->{duration})
+	and
+	!exists $seen{$event_id}) {
+	
+	my @persons;
+	
+	if (exists $event->{persons}->{person}->{content}) {
+	    push @persons, $event->{persons}->{person}->{content};
+	} else {
+	    @persons = map { $_->{content} } values %{$event->{persons}->{person}};
+	}
+	
+	$seen{$event_id}++; ### WTF HACKS!
+	
+	printf("  %sh -> +%sh  %s\n                     [%s]\n\n",
+	       $event->{start},
+	       format_duration($event->{duration}),
+	       encode_utf8($event->{title}),
+	       encode_utf8(join (', ', @persons))
+	    );
+	$found++;
+	
+	if ($recurse) {
+	    $offset = $offset + ttm($event->{duration});
+	    $found += search($saal, 0, $offset);
+	}
+    }
+
+    return $found;
+}
+
 sub search($$$) {
 # die eigentliche Suche
 
@@ -70,41 +109,17 @@ sub search($$$) {
 
 	next unless $day->{date} eq "$year-$mon-$mday";
 
-	foreach my $event_id ( keys %{$day->{room}->{$saal}->{event}} ) {
+	my $events = $day->{room}->{$saal}->{event};
 
-	    my $event = $day->{room}->{$saal}->{event}->{$event_id};
-
-	    my $now = $hour*60 + $min + $offset;
-	    if ($now >= ttm($event->{start})
-		and
-		$now <= ttm($event->{start})+ttm($event->{duration})
-		and
-		!exists $seen{$event_id}) {
-
-		my @persons;
-
-		if (exists $event->{persons}->{person}->{content}) {
-		    push @persons, $event->{persons}->{person}->{content};
-		} else {
-		    @persons = map { $_->{content} } values %{$event->{persons}->{person}};
-		}
-
-		$seen{$event_id}++; ### WTF HACKS!
-
-		printf("  %sh -> +%sh  %s\n                     [%s]\n\n",
-		       $event->{start},
-		       format_duration($event->{duration}),
-		       encode_utf8($event->{title}),
-		       encode_utf8(join (', ', @persons))
-		    );
-		$found++;
-
-		if ($recurse) {
-		    $offset = $offset + ttm($event->{duration});
-		    search($saal, 0, $offset);
-		}
+	if (exists $events->{id}) {
+	    # whoops, just a single event, no list
+	    $found += handle_event($events, $saal, $events->{id}, $recurse, $offset);
+	}
+	else {
+	    foreach my $event_id ( keys %{$events} ) {
+		my $event = $day->{room}->{$saal}->{event}->{$event_id};
+		$found += handle_event($event, $saal, $event_id, $recurse, $offset);
 	    }
-
 	}
 
     }
