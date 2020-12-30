@@ -77,7 +77,7 @@ sub handle_event($$$$$) {
 	if (exists $event->{persons}->{person}->{content}) {
 	    push @persons, $event->{persons}->{person}->{content};
 	} else {
-	    @persons = map { $_->{content} } values %{$event->{persons}->{person}};
+	    @persons = map { $_->{content} } grep { ref $_ eq 'HASH' } values %{$event->{persons}->{person}};
 	}
 	
 	$seen{$event_id}++; ### WTF HACKS!
