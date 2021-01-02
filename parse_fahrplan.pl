@@ -143,8 +143,11 @@ sub get_all_rooms()
 sub parse_file($)
 {
     my $filename = shift;
-    my $xml = `cat $filename`;
-    $ref = XMLin($xml);
+    
+    open my $xml, '<', $filename or die "can't open `$filename': $!";
+    local $/ = undef;
+    $ref = XMLin(<$xml>);
+    close $xml or die "can't close `$filename': $!";
 
     # reset cache
     %seen = ();
