@@ -66,7 +66,7 @@ sub handle_event($$$$) {
 
     my ($event, $saal, $recurse, $offset) = @_;
     my $event_id = $event->{id};
-    my $found = 0;
+    my @found;
     
     my $now = $hour*60 + $min + $offset;
     if ($now >= ttm($event->{start})
@@ -78,29 +78,28 @@ sub handle_event($$$$) {
 	my @persons = map { $_->{public_name} } @{$event->{persons}};
 	
 	$seen{$event_id}++; ### WTF HACKS!
-	
-	printf("  %sh -> +%sh  %s\n                     [%s]\n\n",
-	       $event->{start},
-	       format_duration($event->{duration}),
-	       $event->{title},
-	       join (', ', @persons)
-	    );
-	$found++;
+
+	push @found, {
+	    START    => $event->{start},
+	    DURATION => format_duration($event->{duration}),
+	    TITLE    => $event->{title},
+	    PERSONS  => join (', ', @persons)
+	};
 	
 	if ($recurse) {
 	    $offset = $offset + ttm($event->{duration});
-	    $found += search($saal, 0, $offset);
+	    push @found, search($saal, $recurse-1, $offset);
 	}
     }
 
-    return $found;
+    return @found;
 }
 
 sub search($$$) {
 # die eigentliche Suche
 
     my ($saal, $recurse, $offset) = (@_);
-    my $found = 0;
+    my @found;
 
     foreach my $day (@{$ref->{schedule}->{conference}->{days}}) {
 
@@ -108,12 +107,12 @@ sub search($$$) {
 
 	my $events = $day->{rooms}->{$saal};
 	foreach my $event ( @{$events} ) {
-	    $found += handle_event($event, $saal, $recurse, $offset);
+	    push @found, handle_event($event, $saal, $recurse, $offset);
 	}
 
     }
 
-    return $found;
+    return @found;
 }
 
 sub get_all_rooms()
@@ -143,10 +142,19 @@ sub parse_file($)
     # order on every display is a good thing, so everybody gets to be on
     # top once in a while
     foreach my $saal (get_all_rooms()) { # foreach my $saal ('rC1', 'rC2', ... ) {
-	printf "%s:\n", $saal;
-
 	foreach my $lookahead (qw(0 20 40 60 80 100 120 140 160 180)) {
-	    last if search($saal, 1, $lookahead);
+	    if (my @events = search($saal, 1, $lookahead)) {
+		printf "%s:\n", $saal;
+		foreach my $event (@events) {
+		    printf("  %sh -> +%sh  %s\n                     [%s]\n\n",
+			   $event->{START},
+			   $event->{DURATION},
+			   $event->{TITLE},
+			   $event->{PERSONS},
+			);
+		}
+		last;
+	    }
 	}
     }
 }
