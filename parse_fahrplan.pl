@@ -62,39 +62,6 @@ sub format_duration($) {
 
 sub search($$$);
 
-sub handle_event($$$$) {
-
-    my ($event, $saal, $recurse, $offset) = @_;
-    my $event_id = $event->{id};
-    my @found;
-    
-    my $now = $hour*60 + $min + $offset;
-    if ($now >= ttm($event->{start})
-	and
-	$now <= ttm($event->{start})+ttm($event->{duration})
-	and
-	!exists $seen{$event_id}) {
-	
-	my @persons = map { $_->{public_name} } @{$event->{persons}};
-	
-	$seen{$event_id}++; ### WTF HACKS!
-
-	push @found, {
-	    START    => $event->{start},
-	    DURATION => format_duration($event->{duration}),
-	    TITLE    => $event->{title},
-	    PERSONS  => join (', ', @persons)
-	};
-	
-	if ($recurse) {
-	    $offset = $offset + ttm($event->{duration});
-	    push @found, search($saal, $recurse-1, $offset);
-	}
-    }
-
-    return @found;
-}
-
 sub search($$$) {
 # die eigentliche Suche
 
@@ -107,7 +74,32 @@ sub search($$$) {
 
 	my $events = $day->{rooms}->{$saal};
 	foreach my $event ( @{$events} ) {
-	    push @found, handle_event($event, $saal, $recurse, $offset);
+
+	    my $event_id = $event->{id};
+
+	    my $now = $hour*60 + $min + $offset;
+	    if ($now >= ttm($event->{start})
+		and
+		$now <= ttm($event->{start})+ttm($event->{duration})
+		and
+		!exists $seen{$event_id}) {
+
+		my @persons = map { $_->{public_name} } @{$event->{persons}};
+
+		$seen{$event_id}++; ### WTF HACKS!
+
+		push @found, {
+		    START    => $event->{start},
+		    DURATION => format_duration($event->{duration}),
+		    TITLE    => $event->{title},
+		    PERSONS  => join (', ', @persons)
+		};
+
+		if ($recurse) {
+		    $offset = $offset + ttm($event->{duration});
+		    push @found, search($saal, $recurse-1, $offset);
+		}
+	    }
 	}
 
     }
