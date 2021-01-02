@@ -5,6 +5,9 @@ use XML::Simple;
 
 use Encode;
 
+# usage:
+# parse_fahrplan.pl [-faketime=YYYYMMDDhhmm] <file1> [<file2> [...]]
+
 my (undef,$min,$hour,$mday,$mon,$year,undef,undef,undef) =
     localtime(time);
 $mon+=1;
@@ -39,11 +42,8 @@ if ($hour < 4) {
     $mday--;
 }
 
-my $filename = shift @ARGV;
-die "no fahrplan filename given" unless defined $filename;
-my $xml = `cat $filename`;
-my $ref = XMLin($xml);
-
+# TODO: pass around, don't use globals
+my $ref;
 my %seen;
 
 sub ttm ($) {
@@ -140,13 +140,27 @@ sub get_all_rooms()
     return keys %rooms;
 }
 
-# NOTE: the rooms are not sorted but with so many rooms shuffling the
-# order on every display is a good thing, so everybody gets to be on
-# top once in a while
-foreach my $saal (get_all_rooms()) { # foreach my $saal ('rC1', 'rC2', ... ) {
-    printf "%s:\n", encode_utf8($saal);
+sub parse_file($)
+{
+    my $filename = shift;
+    my $xml = `cat $filename`;
+    $ref = XMLin($xml);
 
-    foreach my $lookahead (qw(0 20 40 60 80 100 120 140 160 180)) {
-	last if search($saal, 1, $lookahead);
+    # reset cache
+    %seen = ();
+
+    # NOTE: the rooms are not sorted but with so many rooms shuffling the
+    # order on every display is a good thing, so everybody gets to be on
+    # top once in a while
+    foreach my $saal (get_all_rooms()) { # foreach my $saal ('rC1', 'rC2', ... ) {
+	printf "%s:\n", encode_utf8($saal);
+
+	foreach my $lookahead (qw(0 20 40 60 80 100 120 140 160 180)) {
+	    last if search($saal, 1, $lookahead);
+	}
     }
 }
+
+my @filenames = @ARGV;
+die "no fahrplan filenames given" unless @filenames;
+parse_file $_ foreach @filenames;
