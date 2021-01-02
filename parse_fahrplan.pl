@@ -3,6 +3,8 @@ use warnings;
 use strict;
 use JSON::MaybeXS qw(decode_json);
 
+binmode STDOUT, ':encoding(UTF-8)';
+
 # usage:
 # parse_fahrplan.pl [-faketime=YYYYMMDDhhmm] <file1> [<file2> [...]]
 
