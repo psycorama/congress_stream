@@ -5,9 +5,6 @@ use XML::Simple;
 
 use Encode;
 
-my $xml = `cat schedule`;
-my $ref = XMLin($xml);
-
 my (undef,$min,$hour,$mday,$mon,$year,undef,undef,undef) =
     localtime(time);
 $mon+=1;
@@ -41,6 +38,11 @@ if (defined $ARGV[0] and $ARGV[0] =~ /^-faketime=\d+$/) {
 if ($hour < 4) {
     $mday--;
 }
+
+my $filename = shift @ARGV;
+die "no fahrplan filename given" unless defined $filename;
+my $xml = `cat $filename`;
+my $ref = XMLin($xml);
 
 my %seen;
 
@@ -146,18 +148,5 @@ foreach my $saal (get_all_rooms()) { # foreach my $saal ('rC1', 'rC2', ... ) {
 
     foreach my $lookahead (qw(0 20 40 60 80 100 120 140 160 180)) {
 	last if search($saal, 1, $lookahead);
-    }
-}
-
-if (-e 'schedule_sz') {
-    $xml = `cat schedule_sz`;
-    $ref = XMLin($xml);
-
-    print "Sendezentrum:\n"; # skip 'Podcaster-Tisch'
-    foreach my $saal ("Sendezentrumsb\x{fc}hne", 'Sendezentrumsbühne') { # cheap umlaut encoding hack
-
-	foreach my $lookahead (qw(0 20 40 60 80 100 120 140 160 180)) {
-	    last if search($saal, 1, $lookahead);
-	}
     }
 }

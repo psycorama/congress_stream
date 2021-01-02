@@ -142,7 +142,10 @@ BUTTONS="${BUTTONS}set HLS:2,set WEBM:3,set HD:4,set SD:5,reload:9,Quit:0"
 # shoop da loop
 while true; do
 
-    SCHEDULE=$(${MYPATH}/parse_fahrplan.pl)
+    SCHEDULE=$(${MYPATH}/parse_fahrplan.pl schedule)
+    if [ -e schedule_sz ]; then
+	SCHEDULE="$SCHEDULE$(${MYPATH}/parse_fahrplan.pl)"
+    fi
     TIME=$(date +%H:%Mh)
     xmessage -xrm '*international: true' \
              -buttons "$BUTTONS" \
