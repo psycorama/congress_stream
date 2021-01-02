@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 use warnings;
 use strict;
-use XML::Simple;
+use JSON::MaybeXS qw(decode_json);
 
 # usage:
 # parse_fahrplan.pl [-faketime=YYYYMMDDhhmm] <file1> [<file2> [...]]
@@ -60,9 +60,10 @@ sub format_duration($) {
 
 sub search($$$);
 
-sub handle_event($$$$$) {
+sub handle_event($$$$) {
 
-    my ($event, $saal, $event_id, $recurse, $offset) = @_;
+    my ($event, $saal, $recurse, $offset) = @_;
+    my $event_id = $event->{id};
     my $found = 0;
     
     my $now = $hour*60 + $min + $offset;
@@ -72,13 +73,7 @@ sub handle_event($$$$$) {
 	and
 	!exists $seen{$event_id}) {
 	
-	my @persons;
-	
-	if (exists $event->{persons}->{person}->{content}) {
-	    push @persons, $event->{persons}->{person}->{content};
-	} else {
-	    @persons = map { $_->{content} } grep { ref $_ eq 'HASH' } values %{$event->{persons}->{person}};
-	}
+	my @persons = map { $_->{public_name} } @{$event->{persons}};
 	
 	$seen{$event_id}++; ### WTF HACKS!
 	
@@ -105,21 +100,13 @@ sub search($$$) {
     my ($saal, $recurse, $offset) = (@_);
     my $found = 0;
 
-    foreach my $day (@{$ref->{day}}) {
+    foreach my $day (@{$ref->{schedule}->{conference}->{days}}) {
 
 	next unless $day->{date} eq "$year-$mon-$mday";
 
-	my $events = $day->{room}->{$saal}->{event};
-
-	if (exists $events->{id}) {
-	    # whoops, just a single event, no list
-	    $found += handle_event($events, $saal, $events->{id}, $recurse, $offset);
-	}
-	else {
-	    foreach my $event_id ( keys %{$events} ) {
-		my $event = $day->{room}->{$saal}->{event}->{$event_id};
-		$found += handle_event($event, $saal, $event_id, $recurse, $offset);
-	    }
+	my $events = $day->{rooms}->{$saal};
+	foreach my $event ( @{$events} ) {
+	    $found += handle_event($event, $saal, $recurse, $offset);
 	}
 
     }
@@ -130,8 +117,8 @@ sub search($$$) {
 sub get_all_rooms()
 {
     my %rooms;
-    foreach my $day (@{$ref->{day}}) {
-	foreach my $room (keys %{$day->{room}}) {
+    foreach my $day (@{$ref->{schedule}->{conference}->{days}}) {
+	foreach my $room (keys %{$day->{rooms}}) {
 	    $rooms{$room}++;
 	}
     }
@@ -142,10 +129,10 @@ sub parse_file($)
 {
     my $filename = shift;
     
-    open my $xml, '<', $filename or die "can't open `$filename': $!";
+    open my $json, '<', $filename or die "can't open `$filename': $!";
     local $/ = undef;
-    $ref = XMLin(<$xml>);
-    close $xml or die "can't close `$filename': $!";
+    $ref = decode_json(<$json>);
+    close $json or die "can't close `$filename': $!";
 
     # reset cache
     %seen = ();

@@ -13,9 +13,9 @@ HLS_URL_TEMPLATE=https://cdn.c3voc.de/hls/%s_native_%s.m3u8
 WEBM_URL_TEMPLATE=https://cdn.c3voc.de/%s_native_%s.webm
 
 # Fahrplan URL
-FAHRPLAN=https://data.c3voc.de/rC3/channels.schedule.xml
-#FAHRPLAN=https://fahrplan.events.ccc.de/rc3/2020/Fahrplan/schedule.xml
-#FAHRPLAN_SZ=https://frab.das-sendezentrum.de/en/35c3/public/schedule.xml
+FAHRPLAN=https://data.c3voc.de/rC3/channels.schedule.json
+#FAHRPLAN=https://fahrplan.events.ccc.de/rc3/2020/Fahrplan/schedule.json
+#FAHRPLAN_SZ=https://frab.das-sendezentrum.de/en/35c3/public/schedule.json
 
 STREAMS="rc1 rc2 bw:bitwaescherei c-b:cbase cs-h:csh ct-sg:chaostrawler cz-tv:chaoszone cw-tv:cwtv2 f.n:franconiannet a-f:hacc kw:kreaturworks oio r3s rr:restrealitaet sz:sendezentrum wp:wikipaka xh:xhain ib:infobeamer cl:classics"
 
