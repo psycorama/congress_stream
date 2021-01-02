@@ -3,8 +3,6 @@ use warnings;
 use strict;
 use XML::Simple;
 
-use Encode;
-
 # usage:
 # parse_fahrplan.pl [-faketime=YYYYMMDDhhmm] <file1> [<file2> [...]]
 
@@ -87,8 +85,8 @@ sub handle_event($$$$$) {
 	printf("  %sh -> +%sh  %s\n                     [%s]\n\n",
 	       $event->{start},
 	       format_duration($event->{duration}),
-	       encode_utf8($event->{title}),
-	       encode_utf8(join (', ', @persons))
+	       $event->{title},
+	       join (', ', @persons)
 	    );
 	$found++;
 	
@@ -156,7 +154,7 @@ sub parse_file($)
     # order on every display is a good thing, so everybody gets to be on
     # top once in a while
     foreach my $saal (get_all_rooms()) { # foreach my $saal ('rC1', 'rC2', ... ) {
-	printf "%s:\n", encode_utf8($saal);
+	printf "%s:\n", $saal;
 
 	foreach my $lookahead (qw(0 20 40 60 80 100 120 140 160 180)) {
 	    last if search($saal, 1, $lookahead);
