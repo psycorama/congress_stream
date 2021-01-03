@@ -10,10 +10,11 @@ stdout=$(mktemp --tmpdir stdout.XXXXXXXXXX)
 stderr=$(mktemp --tmpdir stderr.XXXXXXXXXX)
 tests=$(mktemp --tmpdir tests.XXXXXXXXXX)
 expected=$(mktemp --tmpdir expected.XXXXXXXXXX)
+tempfile=$(mktemp --tmpdir tempfile.XXXXXXXXXX)
 
 cleanup()
 {
-    rm -f "$stdout" "$stderr" "$tests" "$expected"
+    rm -f "$stdout" "$stderr" "$tests" "$expected" "$tempfile"
 }
 
 trap cleanup EXIT
@@ -44,18 +45,39 @@ matches_expected()
     diff "$expected" "$actual" > /dev/null
 }
 
-show_diff()
+file_contains_expected()
+{
+    local file=$1
+    local firstline start length end
+
+    read -r firstline < "$expected"
+
+    start=$(grep -F -n "$firstline" "$file" | cut -f1 -d:)
+
+    if [ -z "$start" ]; then
+	return 1
+    fi
+
+    read -r length _ < <(wc -l "$expected")
+    end=$(( start + length - 1))
+
+    sed -n "$start","$end"p "$file" > "$tempfile"
+
+    diff "$expected" "$tempfile" > /dev/null
+}
+
+file_contains_string()
+{
+    local file=$1 expected=$2
+
+    grep -F -q "$expected" "$file"
+}
+
+show_diff_to_expected()
 {
     local actual=$1
     
     diff -u "$expected" "$actual" || true
-}
-
-file_contains()
-{
-    local file=$1 expected=$2
-
-    grep -q "$expected" "$file"
 }
 
 ## the tests - functions must start with "test_"
@@ -68,12 +90,14 @@ test_no_filename_returns_error()
     fi
 
     if ! file_is_empty "$stdout"; then
-	echo "stdout is not empty"
+	echo "stdout is not empty:"
+	cat "$stdout"
 	return 1
     fi
 
-    if ! file_contains "$stderr" 'no fahrplan filenames given'; then
-	echo "error message not found"
+    if ! file_contains_string "$stderr" 'no fahrplan filenames given'; then
+	echo "error message not found:"
+	cat "$stderr"
 	return 1
     fi
 }
@@ -86,12 +110,14 @@ test_wrong_filename_returns_error()
     fi
 
     if ! file_is_empty "$stdout"; then
-	echo "stdout is not empty"
+	echo "stdout is not empty:"
+	cat "$stdout"
 	return 1
     fi
 
-    if ! file_contains "$stderr" "can't open \`NON-EXISTING-FILE':"; then
-	echo "error message not found"
+    if ! file_contains_string "$stderr" "can't open \`NON-EXISTING-FILE':"; then
+	echo "error message not found:"
+	cat "$stderr"
 	return 1
     fi
 }
@@ -109,12 +135,13 @@ EOF
 
     if ! matches_expected "$stdout"; then
 	echo "stdout differs from expected:"
-	show_diff "$stdout"
+	show_diff_to_expected "$stdout"
 	return 1
     fi
 
     if ! file_is_empty "$stderr"; then
-	echo "stderr is not empty"
+	echo "stderr is not empty:"
+	cat "$stderr"
 	return 1
     fi
 }
@@ -136,12 +163,95 @@ EOF
 
     if ! matches_expected "$stdout"; then
 	echo "stdout differs from expected:"
-	show_diff "$stdout"
+	show_diff_to_expected "$stdout"
 	return 1
     fi
 
     if ! file_is_empty "$stderr"; then
-	echo "stderr is not empty"
+	echo "stderr is not empty:"
+	cat "$stderr"
+	return 1
+    fi
+}
+
+test_day_with_many_eventy_lists_rooms_in_random_order()
+{
+    if ! call_script -faketime=202012281300 $test_schedule; then
+	echo 'RC != 0'
+	return 1
+    fi
+
+    if ! file_contains_string "$stdout" 'time overwritten as 2020-12-28 13:00'; then
+	echo "fake time notification not found in stdout:"
+	cat "$stdout"
+	return 1
+    fi
+
+    set_expected <<EOF
+reruns:
+  12:52h -> +00:56h  playing videogames for fun and profit
+                     []
+
+  13:48h -> +00:40h  hacking things
+                     []
+
+EOF
+
+    if ! file_contains_expected "$stdout"; then
+	echo "expected text not found in stdout:"
+	cat "$expected"
+	show_diff_to_expected "$stdout"
+	return 1
+    fi
+
+    set_expected <<EOF
+room 1:
+  12:00h -> +01:00h  hack ALL the things
+                     [Rubeen, Doren, Johan]
+
+  14:00h -> +00:40h  hacking things for fun and profit
+                     [Lesy, Hathrin, Jooordt]
+
+EOF
+
+    if ! file_contains_expected "$stdout"; then
+	echo "expected text not found in stdout:"
+	cat "$expected"
+	show_diff_to_expected "$stdout"
+	return 1
+    fi
+
+    set_expected <<EOF
+room 2:
+  13:00h -> +01:00h  data for (data) digitizens
+                     [Gelisa]
+
+EOF
+
+    if ! file_contains_expected "$stdout"; then
+	echo "expected text not found in stdout:"
+	cat "$expected"
+	show_diff_to_expected "$stdout"
+	return 1
+    fi
+
+    set_expected <<EOF
+rümlaut:
+  12:00h -> +03:00h  Digitale Affenbande
+                     [Wawr]
+
+EOF
+
+    if ! file_contains_expected "$stdout"; then
+	echo "expected text not found in stdout:"
+	cat "$expected"
+	show_diff_to_expected "$stdout"
+	return 1
+    fi
+
+    if ! file_is_empty "$stderr"; then
+	echo "stderr is not empty:"
+	cat "$stderr"
 	return 1
     fi
 }
@@ -156,12 +266,13 @@ test_fail=0
 while read -r _ _ function; do
     if [ "${function:0:5}" = 'test_' ]; then
 	(( test_sum++ ))
-	echo -n "$function: "
+	echo -n " * $function: "
 	if eval "$function"; then
 	    echo "OK"
 	    (( test_ok++ ))
 	else
 	    (( test_fail++ ))
+	    echo
 	fi
     fi
 done < "$tests"
@@ -169,7 +280,8 @@ done < "$tests"
 ## show results
 
 echo
-printf "ran %3d tests\\n" $test_sum
+echo '--------------'
+printf "ran %3d tests:\\n" $test_sum
 printf "%3d tests succeeded\\n" $test_ok
 printf "%3d tests failed\\n" $test_fail
 
