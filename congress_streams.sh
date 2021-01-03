@@ -4,6 +4,7 @@
 
 # - - - - >8 - - - - - configure here - - - - >8 - - - - -
 
+# TODO: extract title from fahrplan JSON
 TITLE="Remote Chaos Experience"
 
 # stream configuration:
