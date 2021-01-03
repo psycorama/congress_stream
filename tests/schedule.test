@@ -1,0 +1,237 @@
+{
+  "schedule": {
+    "conference": {
+      "title": "Unit Test Schedule",
+      "days": [
+        {
+          "date": "2020-12-28",
+          "rooms": {
+            "reruns": [
+              {
+                "title": "a talk about something",
+                "duration": "0:59",
+                "start": "11:53",
+                "persons": [
+                  {
+                    "public_name": ""
+                  }
+                ],
+                "id": 490539
+              },
+              {
+                "title": "playing videogames for fun and profit",
+                "duration": "0:56",
+                "start": "12:52",
+                "id": 515565,
+                "persons": [
+                  {
+                    "public_name": ""
+                  }
+                ]
+              },
+              {
+                "title": "hacking things",
+                "start": "13:48",
+                "duration": "0:40",
+                "id": 918285,
+                "persons": [
+                  {
+                    "public_name": ""
+                  }
+                ]
+              },
+              {
+                "title": "hacking moar things",
+                "start": "14:28",
+                "duration": "1:14",
+                "id": 914077,
+                "persons": [
+                  {
+                    "public_name": ""
+                  }
+                ]
+              }
+            ],
+            "room 1": [
+              {
+                "duration": "01:00",
+                "start": "12:00",
+                "title": "hack ALL the things",
+                "persons": [
+                  {
+                    "public_name": "Rubeen"
+                  },
+                  {
+                    "public_name": "Doren"
+                  },
+                  {
+                    "public_name": "Johan"
+                  }
+                ],
+                "id": 11589
+              },
+              {
+                "title": "hacking things for fun and profit",
+                "duration": "00:40",
+                "start": "14:00",
+                "persons": [
+                  {
+                    "public_name": "Lesy"
+                  },
+                  {
+                    "public_name": "Hathrin"
+                  },
+                  {
+                    "public_name": "Jooordt"
+                  }
+                ],
+                "id": 11499
+              },
+              {
+                "title": "hacking things only for fun",
+                "start": "18:00",
+                "duration": "01:00",
+                "id": 11439,
+                "persons": [
+                  {
+                    "public_name": "Brusda"
+                  }
+                ]
+              }
+            ],
+            "room 2": [
+              {
+                "title": "linux ALL the kernels",
+                "start": "12:00",
+                "duration": "00:30",
+                "id": 594508,
+                "persons": [
+                  {
+                    "public_name": "aesuklapp"
+                  }
+                ]
+              },
+              {
+                "persons": [
+                  {
+                    "public_name": "Gelisa"
+                  }
+                ],
+                "id": 985812,
+                "duration": "01:00",
+                "start": "13:00",
+                "title": "data for (data) digitizens"
+              },
+              {
+                "persons": [
+                  {
+                    "public_name": "aesuklapp"
+                  }
+                ],
+                "id": 518497,
+                "duration": "01:00",
+                "start": "14:20",
+                "title": "Flausch - woher und wohin damit"
+              }
+            ],
+            "rümlaut": [
+              {
+                "title": "Digitale Affenbande",
+                "start": "12:00",
+                "duration": "03:00",
+                "id": 11591,
+                "persons": [
+                  {
+                    "public_name": "Wawr"
+                  }
+                ]
+              },
+              {
+                "id": 11510,
+                "persons": [
+                  {
+                    "public_name": "Fukas Grube"
+                  }
+                ],
+                "title": "Was machen wir damit?",
+                "start": "15:10",
+                "duration": "00:40"
+              }
+            ]
+          }
+        },
+        {
+          "date": "2020-12-29",
+          "rooms": {
+            "only room": [
+              {
+                "title": "Staatsüberwachung ohne Video - passt das zusammen?",
+                "duration": "00:55",
+                "start": "15:00",
+                "id": 293524,
+                "persons": [
+                  {
+                    "public_name": "Ullter Rich"
+                  }
+                ]
+              },
+              {
+                "title": "Das geht so nicht.  Du musst es anders machen!",
+                "duration": "00:55",
+                "start": "16:30",
+                "id": 324322,
+                "persons": [
+                  {
+                    "public_name": "t.k.l"
+                  }
+                ]
+              },
+              {
+                "duration": "00:25",
+                "start": "19:00",
+                "title": "Licht ins Darknet",
+                "persons": [
+                  {
+                    "public_name": "Marrias"
+                  },
+                  {
+                    "public_name": "Döstoph"
+                  }
+                ],
+                "id": 95008
+              },
+              {
+                "start": "19:45",
+                "duration": "00:25",
+                "title": "Eventually consistent",
+                "persons": [
+                  {
+                    "public_name": "Joordt"
+                  },
+                  {
+                    "public_name": "t.k.l"
+                  },
+                  {
+                    "public_name": "m.t.h"
+                  }
+                ],
+                "id": 192936
+              },
+              {
+                "duration": "00:55",
+                "start": "20:30",
+                "title": "Opening Closed Sources",
+                "id": 568894,
+                "persons": [
+                  {
+                    "public_name": "Fromas"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
