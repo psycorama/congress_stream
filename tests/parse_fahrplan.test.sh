@@ -105,16 +105,30 @@ assert_stderr_is_empty()
     fi
 }
 
+assert_exitcode_is_ok()
+{
+    if [ $? -ne 0 ]; then
+	fail 'exitcode != 0'
+	return 1
+    fi
+}
+
+assert_exitcode_is_error()
+{
+    if [ $? -eq 0 ]; then
+	fail 'exitcode == 0'
+	return 1
+    fi
+}
+
 ## the tests - functions must start with "test_"
 
 test_no_filename_returns_error()
 {
-    if call_script; then
-	echo 'RC == 0'
-	return 1
-    fi
+    call_script
 
-    assert_stdout_is_empty || return
+    assert_exitcode_is_error || return
+    assert_stdout_is_empty   || return
 
     if ! file_contains_string "$stderr" 'no fahrplan filenames given'; then
 	echo "error message not found:"
@@ -125,11 +139,9 @@ test_no_filename_returns_error()
 
 test_wrong_filename_returns_error()
 {
-    if call_script $test_schedule NON-EXISTING-FILE; then
-	echo 'RC == 0'
-	return 1
-    fi
+    call_script $test_schedule NON-EXISTING-FILE
 
+    assert_exitcode_is_error || return
     assert_stdout_is_empty || return
 
     if ! file_contains_string "$stderr" "can't open \`NON-EXISTING-FILE':"; then
@@ -141,10 +153,9 @@ test_wrong_filename_returns_error()
 
 test_day_with_no_events_lists_empty_fahrplan()
 {
-    if ! call_script -faketime=202012201515 $test_schedule; then
-	echo 'RC != 0'
-	return 1
-    fi
+    call_script -faketime=202012201515 $test_schedule
+
+    assert_exitcode_is_ok || return
 
     set_expected <<EOF
 time overwritten as 2020-12-20 15:15
@@ -161,10 +172,9 @@ EOF
 
 test_day_with_single_room_lists_only_that_room()
 {
-    if ! call_script -faketime=202012292000 $test_schedule; then
-	echo 'RC != 0'
-	return 1
-    fi
+    call_script -faketime=202012292000 $test_schedule
+    
+    assert_exitcode_is_ok || return
 
     set_expected <<EOF
 time overwritten as 2020-12-29 20:00
@@ -185,10 +195,9 @@ EOF
 
 test_day_with_many_eventy_lists_rooms_in_random_order()
 {
-    if ! call_script -faketime=202012281300 $test_schedule; then
-	echo 'RC != 0'
-	return 1
-    fi
+    call_script -faketime=202012281300 $test_schedule
+
+    assert_exitcode_is_ok || return
 
     if ! file_contains_string "$stdout" 'time overwritten as 2020-12-28 13:00'; then
 	echo "fake time notification not found in stdout:"
