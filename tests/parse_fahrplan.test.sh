@@ -6,15 +6,16 @@ test_schedule=tests/schedule.test
 
 ## init temporary files
 
-stdout=$(mktemp --tmpdir stdout.XXXXXXXXXX)
-stderr=$(mktemp --tmpdir stderr.XXXXXXXXXX)
-tests=$(mktemp --tmpdir tests.XXXXXXXXXX)
-expected=$(mktemp --tmpdir expected.XXXXXXXXXX)
-tempfile=$(mktemp --tmpdir tempfile.XXXXXXXXXX)
+tempdir=$(mktemp -d --tmpdir parse_fahrplan.test.XXXXXXXXXX)
+stdout="$tempdir/stdout"
+stderr="$tempdir/stderr"
+tests="$tempdir/tests"
+expected="$tempdir/expected"
+tempfile="$tempdir/tempfile"
 
 cleanup()
 {
-    rm -f "$stdout" "$stderr" "$tests" "$expected" "$tempfile"
+    rm -rf "$tempdir"
 }
 
 trap cleanup EXIT
