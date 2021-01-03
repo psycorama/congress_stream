@@ -81,6 +81,30 @@ show_diff_to_expected()
     diff -u "$expected" "$actual" || true
 }
 
+fail()
+{
+    echo
+    echo " ! $*"
+}
+
+assert_stdout_is_empty()
+{
+    if ! file_is_empty "$stdout"; then
+	fail "stdout is not empty"
+	cat "$stdout"
+	return 1
+    fi
+}
+
+assert_stderr_is_empty()
+{
+    if ! file_is_empty "$stderr"; then
+	fail "stderr is not empty"
+	cat "$stderr"
+	return 1
+    fi
+}
+
 ## the tests - functions must start with "test_"
 
 test_no_filename_returns_error()
@@ -90,11 +114,7 @@ test_no_filename_returns_error()
 	return 1
     fi
 
-    if ! file_is_empty "$stdout"; then
-	echo "stdout is not empty:"
-	cat "$stdout"
-	return 1
-    fi
+    assert_stdout_is_empty || return
 
     if ! file_contains_string "$stderr" 'no fahrplan filenames given'; then
 	echo "error message not found:"
@@ -110,11 +130,7 @@ test_wrong_filename_returns_error()
 	return 1
     fi
 
-    if ! file_is_empty "$stdout"; then
-	echo "stdout is not empty:"
-	cat "$stdout"
-	return 1
-    fi
+    assert_stdout_is_empty || return
 
     if ! file_contains_string "$stderr" "can't open \`NON-EXISTING-FILE':"; then
 	echo "error message not found:"
@@ -140,11 +156,7 @@ EOF
 	return 1
     fi
 
-    if ! file_is_empty "$stderr"; then
-	echo "stderr is not empty:"
-	cat "$stderr"
-	return 1
-    fi
+    assert_stderr_is_empty || return
 }
 
 test_day_with_single_room_lists_only_that_room()
@@ -168,11 +180,7 @@ EOF
 	return 1
     fi
 
-    if ! file_is_empty "$stderr"; then
-	echo "stderr is not empty:"
-	cat "$stderr"
-	return 1
-    fi
+    assert_stderr_is_empty || return
 }
 
 test_day_with_many_eventy_lists_rooms_in_random_order()
@@ -250,11 +258,7 @@ EOF
 	return 1
     fi
 
-    if ! file_is_empty "$stderr"; then
-	echo "stderr is not empty:"
-	cat "$stderr"
-	return 1
-    fi
+    assert_stderr_is_empty || return
 }
 
 ## run tests
