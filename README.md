@@ -18,5 +18,6 @@ and enjoy the show.
 Necessary tools:
 
  - `xmessage` (Fedora: `gxmessage`)
+ - `wget`
  - `mpv` or `mplayer`
  - `perl` and `JSON::MaybeXS`
