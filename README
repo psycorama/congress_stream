@@ -12,4 +12,4 @@ and enjoy the show.
 Necessary tools:
  * xmessage (fedora: gxmessage)
  * mpv or mplayer
- * perl, XML::Simple
+ * perl, JSON::MaybeXS
