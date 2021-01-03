@@ -83,7 +83,7 @@ show_diff_to_expected()
 
 fail()
 {
-    echo
+    echo "not ok"
     echo " ! $*"
 }
 
@@ -121,6 +121,21 @@ assert_exitcode_is_error()
     fi
 }
 
+assert_error_message_contains()
+{
+    local expected=$1
+
+    if ! file_contains_string "$stderr" "$expected"; then
+	fail "error message not found"
+	echo "---expected:"
+	echo "$expected"
+	echo "---actual:"
+	cat "$stderr"
+	echo "---"
+	return 1
+    fi
+}
+
 ## the tests - functions must start with "test_"
 
 test_no_filename_returns_error()
@@ -129,12 +144,7 @@ test_no_filename_returns_error()
 
     assert_exitcode_is_error || return
     assert_stdout_is_empty   || return
-
-    if ! file_contains_string "$stderr" 'no fahrplan filenames given'; then
-	echo "error message not found:"
-	cat "$stderr"
-	return 1
-    fi
+    assert_error_message_contains 'no fahrplan filenames given' || return
 }
 
 test_wrong_filename_returns_error()
@@ -143,12 +153,7 @@ test_wrong_filename_returns_error()
 
     assert_exitcode_is_error || return
     assert_stdout_is_empty || return
-
-    if ! file_contains_string "$stderr" "can't open \`NON-EXISTING-FILE':"; then
-	echo "error message not found:"
-	cat "$stderr"
-	return 1
-    fi
+    assert_error_message_contains "can't open \`NON-EXISTING-FILE':" || return
 }
 
 test_day_with_no_events_lists_empty_fahrplan()
