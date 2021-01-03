@@ -34,12 +34,12 @@ file_is_empty()
     ! [ -s "$file" ]
 }
 
-set_expected()
+copy_stdin_to_expected()
 {
     cat > "$expected"
 }
 
-matches_expected()
+file_matches_expected()
 {
     local actual=$1
     
@@ -77,8 +77,9 @@ file_contains_string()
 show_diff_to_expected()
 {
     local actual=$1
-    
-    diff -u "$expected" "$actual" || true
+
+    diff -u "$expected" "$actual"
+    echo "---"
 }
 
 fail()
@@ -136,6 +137,28 @@ assert_error_message_contains()
     fi
 }
 
+assert_stdout_matches()
+{
+    copy_stdin_to_expected
+
+    if ! file_matches_expected "$stdout"; then
+	fail "stdout differs from expected"
+	show_diff_to_expected "$stdout"
+	return 1
+    fi
+}
+
+assert_stdout_contains()
+{
+    copy_stdin_to_expected
+
+    if ! file_contains_expected "$stdout"; then
+	fail "stdout does not contain expected"
+	show_diff_to_expected "$stdout"
+	return 1
+    fi
+}
+
 ## the tests - functions must start with "test_"
 
 test_no_filename_returns_error()
@@ -152,7 +175,7 @@ test_wrong_filename_returns_error()
     call_script $test_schedule NON-EXISTING-FILE
 
     assert_exitcode_is_error || return
-    assert_stdout_is_empty || return
+    assert_stdout_is_empty   || return
     assert_error_message_contains "can't open \`NON-EXISTING-FILE':" || return
 }
 
@@ -160,28 +183,20 @@ test_day_with_no_events_lists_empty_fahrplan()
 {
     call_script -faketime=202012201515 $test_schedule
 
-    assert_exitcode_is_ok || return
-
-    set_expected <<EOF
+    assert_exitcode_is_ok  || return
+    assert_stderr_is_empty || return
+  { assert_stdout_matches  || return; } <<EOF
 time overwritten as 2020-12-20 15:15
 EOF
-
-    if ! matches_expected "$stdout"; then
-	echo "stdout differs from expected:"
-	show_diff_to_expected "$stdout"
-	return 1
-    fi
-
-    assert_stderr_is_empty || return
 }
 
 test_day_with_single_room_lists_only_that_room()
 {
     call_script -faketime=202012292000 $test_schedule
     
-    assert_exitcode_is_ok || return
-
-    set_expected <<EOF
+    assert_exitcode_is_ok  || return
+    assert_stderr_is_empty || return
+  { assert_stdout_matches  || return; } <<EOF
 time overwritten as 2020-12-29 20:00
 only room:
   19:45h -> +00:25h  Eventually consistent
@@ -189,28 +204,21 @@ only room:
 
 EOF
 
-    if ! matches_expected "$stdout"; then
-	echo "stdout differs from expected:"
-	show_diff_to_expected "$stdout"
-	return 1
-    fi
-
-    assert_stderr_is_empty || return
 }
 
 test_day_with_many_eventy_lists_rooms_in_random_order()
 {
     call_script -faketime=202012281300 $test_schedule
 
-    assert_exitcode_is_ok || return
+    assert_exitcode_is_ok  || return
+    assert_stderr_is_empty || return
+  { assert_stdout_contains || return; } <<EOF
+time overwritten as 2020-12-28 13:00
+EOF
 
-    if ! file_contains_string "$stdout" 'time overwritten as 2020-12-28 13:00'; then
-	echo "fake time notification not found in stdout:"
-	cat "$stdout"
-	return 1
-    fi
+    # room order is randomized, so check all room chunks individually
 
-    set_expected <<EOF
+  { assert_stdout_contains || return; } <<EOF
 reruns:
   12:52h -> +00:56h  playing videogames for fun and profit
                      []
@@ -220,14 +228,7 @@ reruns:
 
 EOF
 
-    if ! file_contains_expected "$stdout"; then
-	echo "expected text not found in stdout:"
-	cat "$expected"
-	show_diff_to_expected "$stdout"
-	return 1
-    fi
-
-    set_expected <<EOF
+  { assert_stdout_contains || return; } <<EOF
 room 1:
   12:00h -> +01:00h  hack ALL the things
                      [Rubeen, Doren, Johan]
@@ -237,42 +238,20 @@ room 1:
 
 EOF
 
-    if ! file_contains_expected "$stdout"; then
-	echo "expected text not found in stdout:"
-	cat "$expected"
-	show_diff_to_expected "$stdout"
-	return 1
-    fi
-
-    set_expected <<EOF
+  { assert_stdout_contains || return; } <<EOF
 room 2:
   13:00h -> +01:00h  data for (data) digitizens
                      [Gelisa]
 
 EOF
 
-    if ! file_contains_expected "$stdout"; then
-	echo "expected text not found in stdout:"
-	cat "$expected"
-	show_diff_to_expected "$stdout"
-	return 1
-    fi
-
-    set_expected <<EOF
+  { assert_stdout_contains || return; } <<EOF
 rümlaut:
   12:00h -> +03:00h  Digitale Affenbande
                      [Wawr]
 
 EOF
 
-    if ! file_contains_expected "$stdout"; then
-	echo "expected text not found in stdout:"
-	cat "$expected"
-	show_diff_to_expected "$stdout"
-	return 1
-    fi
-
-    assert_stderr_is_empty || return
 }
 
 ## run tests
