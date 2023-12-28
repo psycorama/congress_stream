@@ -13,7 +13,7 @@
                 "start": "11:53",
                 "persons": [
                   {
-                    "public_name": ""
+                    "name": ""
                   }
                 ],
                 "id": 490539
@@ -25,7 +25,7 @@
                 "id": 515565,
                 "persons": [
                   {
-                    "public_name": ""
+                    "name": ""
                   }
                 ]
               },
@@ -36,7 +36,7 @@
                 "id": 918285,
                 "persons": [
                   {
-                    "public_name": ""
+                    "name": ""
                   }
                 ]
               },
@@ -47,7 +47,7 @@
                 "id": 914077,
                 "persons": [
                   {
-                    "public_name": ""
+                    "name": ""
                   }
                 ]
               }
@@ -59,13 +59,13 @@
                 "title": "hack ALL the things",
                 "persons": [
                   {
-                    "public_name": "Rubeen"
+                    "name": "Rubeen"
                   },
                   {
-                    "public_name": "Doren"
+                    "name": "Doren"
                   },
                   {
-                    "public_name": "Johan"
+                    "name": "Johan"
                   }
                 ],
                 "id": 11589
@@ -76,13 +76,13 @@
                 "start": "14:00",
                 "persons": [
                   {
-                    "public_name": "Lesy"
+                    "name": "Lesy"
                   },
                   {
-                    "public_name": "Hathrin"
+                    "name": "Hathrin"
                   },
                   {
-                    "public_name": "Jooordt"
+                    "name": "Jooordt"
                   }
                 ],
                 "id": 11499
@@ -94,7 +94,7 @@
                 "id": 11439,
                 "persons": [
                   {
-                    "public_name": "Brusda"
+                    "name": "Brusda"
                   }
                 ]
               }
@@ -107,14 +107,14 @@
                 "id": 594508,
                 "persons": [
                   {
-                    "public_name": "aesuklapp"
+                    "name": "aesuklapp"
                   }
                 ]
               },
               {
                 "persons": [
                   {
-                    "public_name": "Gelisa"
+                    "name": "Gelisa"
                   }
                 ],
                 "id": 985812,
@@ -125,7 +125,7 @@
               {
                 "persons": [
                   {
-                    "public_name": "aesuklapp"
+                    "name": "aesuklapp"
                   }
                 ],
                 "id": 518497,
@@ -142,7 +142,7 @@
                 "id": 11591,
                 "persons": [
                   {
-                    "public_name": "Wawr"
+                    "name": "Wawr"
                   }
                 ]
               },
@@ -150,7 +150,7 @@
                 "id": 11510,
                 "persons": [
                   {
-                    "public_name": "Fukas Grube"
+                    "name": "Fukas Grube"
                   }
                 ],
                 "title": "Was machen wir damit?",
@@ -171,7 +171,7 @@
                 "id": 293524,
                 "persons": [
                   {
-                    "public_name": "Ullter Rich"
+                    "name": "Ullter Rich"
                   }
                 ]
               },
@@ -182,7 +182,7 @@
                 "id": 324322,
                 "persons": [
                   {
-                    "public_name": "t.k.l"
+                    "name": "t.k.l"
                   }
                 ]
               },
@@ -192,10 +192,10 @@
                 "title": "Licht ins Darknet",
                 "persons": [
                   {
-                    "public_name": "Marrias"
+                    "name": "Marrias"
                   },
                   {
-                    "public_name": "Döstoph"
+                    "name": "Döstoph"
                   }
                 ],
                 "id": 95008
@@ -206,13 +206,13 @@
                 "title": "Eventually consistent",
                 "persons": [
                   {
-                    "public_name": "Joordt"
+                    "name": "Joordt"
                   },
                   {
-                    "public_name": "t.k.l"
+                    "name": "t.k.l"
                   },
                   {
-                    "public_name": "m.t.h"
+                    "name": "m.t.h"
                   }
                 ],
                 "id": 192936
@@ -224,7 +224,7 @@
                 "id": 568894,
                 "persons": [
                   {
-                    "public_name": "Fromas"
+                    "name": "Fromas"
                   }
                 ]
               }
