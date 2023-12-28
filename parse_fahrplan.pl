@@ -84,7 +84,7 @@ sub search($$$) {
 		and
 		!exists $seen{$event_id}) {
 
-		my @persons = map { $_->{public_name} } @{$event->{persons}};
+		my @persons = map { $_->{name} } @{$event->{persons}};
 
 		$seen{$event_id}++; ### WTF HACKS!
 
